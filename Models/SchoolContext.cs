@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace npmsreg.Models
@@ -23,7 +24,8 @@ namespace npmsreg.Models
             if (!optionsBuilder.IsConfigured)
             {
                 // local db
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=School;Trusted_Connection=True;");
+                // optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=School;Trusted_Connection=True;");
+                optionsBuilder.UseSqlite("Data Source=/Users/hliu/dev/school.db;");
             }
         }
 
