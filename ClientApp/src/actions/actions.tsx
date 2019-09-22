@@ -1,4 +1,7 @@
-﻿export enum FamilyActionsEnum {
+﻿import { IRegStoreState, IFamily } from "../store/RegStoreState";
+import { ThunkDispatch } from "redux-thunk";
+
+export enum FamilyActionsEnum {
   GetFamily = "GET_FAMILY",
   AddFamily = "ADD_FAMILY",
 }
@@ -15,10 +18,10 @@ export interface AddFamilyActionType {
 
 export type FamilyActionType = GetFamilyActionType | AddFamilyActionType;
 
-export function GetFamily(): GetFamilyActionType {
+export function GetFamily(family: IFamily): GetFamilyActionType {
   return {
     type: FamilyActionsEnum.GetFamily,
-    payload: null
+    payload: family
   };
 }
 
@@ -29,3 +32,13 @@ export function AddFamily(): AddFamilyActionType {
   };
 }
 
+export function GetFamilyData() {
+  return async (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
+    var resp = await fetch('https://reqres.in/api/users/1');
+
+    var json = await resp.json();
+    var firstName = json.data.first_name;
+    var family: IFamily = { FatherName: firstName };
+    dispatch(GetFamily(family));
+  }
+}

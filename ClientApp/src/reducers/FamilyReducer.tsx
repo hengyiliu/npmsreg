@@ -1,16 +1,16 @@
 ﻿import { FamilyActionType, FamilyActionsEnum } from '../actions/actions';
-import { RegStoreState } from '../store/RegStoreState';
+import { IRegStoreState } from '../store/RegStoreState';
 
-const defaultState: RegStoreState = {
+const defaultState: IRegStoreState = {
   family : null
 }
 
-export function FamilyReducer(state: RegStoreState = defaultState, action: FamilyActionType): RegStoreState {
+export function FamilyReducer(state: IRegStoreState = defaultState, action: FamilyActionType): IRegStoreState {
   switch (action.type) {
     case FamilyActionsEnum.AddFamily:
       return { ...state };
     case FamilyActionsEnum.GetFamily:
-      return { ...state};
+      return action.payload;
     default:
       return state;
   }

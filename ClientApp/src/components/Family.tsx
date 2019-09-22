@@ -1,33 +1,25 @@
 import React, { Component } from 'react';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { GetFamily, FamilyActionType, GetFamilyData } from '../actions/actions';
+import { ThunkDispatch } from 'redux-thunk';
+import { IRegStoreState, IFamily } from '../store/RegStoreState';
 
-export interface IStoreState {
+export interface IFamilyProps {
   family: IFamily;
+  getFamily: () => FamilyActionType;
+  getFamilyData: () => Promise<void>;
 }
 
-export interface IFamily {
-  FatherName: string;
-}
-
-export class Family extends Component<any, IFamily> {
+class Family extends Component<IFamilyProps, {}> {
   static displayName: string = Family.name;
 
-  public constructor(props: any) {
-    super(props);
-    this.state = {
-      FatherName: ""
-    };
-  }
-
   public async componentDidMount() {
-    var data2 = await fetch('api/SampleData/WeatherForecasts');
-    var data = {
-      FatherName: "John Smith"
-    };
-    this.setState(data);
+    await this.props.getFamilyData();
   }
 
   public render() {
-    var data = this.state;
+    var data = this.props.family;
     return (
       <div>
         <h2>FamilyDetail</h2>
@@ -47,7 +39,7 @@ export class Family extends Component<any, IFamily> {
             <div className="form-group row">
               <label htmlFor="fatherName" className="col-sm-2 col-form-label">Father English Name</label>
               <div className="col-sm-4">
-                <input type="text" className="form-control" id="fatherName" placeholder="" />
+              <input type="text" className="form-control" id="fatherName" placeholder="" value={this.props.family.FatherName} />
               </div>
               <label htmlFor="motherName" className="col-sm-2 col-form-label">Mother English Name</label>
               <div className="col-sm-4">
@@ -119,3 +111,17 @@ export class Family extends Component<any, IFamily> {
     );
   }
 }
+
+const mapStateToProps = (state: IRegStoreState) => {
+  return {
+    family: state.family
+  };
+}
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
+  return {
+    getFamilyData: () => dispatch(GetFamilyData())
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Family);

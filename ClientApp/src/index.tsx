@@ -6,15 +6,16 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 
 import { RootReducer } from './reducers/RootReducer';
-import { Store, createStore } from 'redux'
+import { Store, createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import { RegStoreState } from './store/RegStoreState';
+import { IRegStoreState } from './store/RegStoreState';
+import thunk from 'redux-thunk'
 
 const baseUrl: string = document.getElementsByTagName('base')[0].getAttribute('href') || '';
 const rootElement = document.getElementById('root');
 
-const store: Store<RegStoreState> = createStore(RootReducer);
+const store: Store<IRegStoreState> = createStore(RootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
   <Provider store={store}>
