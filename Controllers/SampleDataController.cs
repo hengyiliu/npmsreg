@@ -16,14 +16,6 @@ namespace npmsreg.Controllers
         };
 
         [HttpGet("[action]")]
-        public IEnumerable<string> test()
-        {
-            SchoolContext db = new SchoolContext();
-            var fm = from f in db.Families select f.FatherEmail;
-            return fm.ToList();
-        }        
-
-        [HttpGet("[action]")]
         public IEnumerable<WeatherForecast> WeatherForecasts()
         {
             var rng = new Random();

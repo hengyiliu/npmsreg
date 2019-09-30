@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Sqlite;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace npmsreg.Models
 {
@@ -16,22 +16,20 @@ namespace npmsreg.Models
         }
 
         public virtual DbSet<Families> Families { get; set; }
+        public virtual DbSet<Registrations> Registrations { get; set; }
         public virtual DbSet<Students> Students { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // local db
-                // optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=School;Trusted_Connection=True;");
-                optionsBuilder.UseSqlite("Data Source=/Users/hliu/dev/school.db;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=School;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
-
             modelBuilder.Entity<Families>(entity =>
             {
                 entity.Property(e => e.Address).HasMaxLength(200);
@@ -42,25 +40,25 @@ namespace npmsreg.Models
 
                 entity.Property(e => e.FatherEmail).HasMaxLength(100);
 
+                entity.Property(e => e.FatherHelpArea).HasMaxLength(100);
+
                 entity.Property(e => e.FatherName).HasMaxLength(100);
 
+                entity.Property(e => e.FatherOccupation).HasMaxLength(100);
+
                 entity.Property(e => e.FatherPhone).HasMaxLength(50);
-
-                entity.Property(e => e.FatherSpecialty).HasMaxLength(100);
-
-                entity.Property(e => e.FatherWork).HasMaxLength(100);
 
                 entity.Property(e => e.MotherChineseName).HasMaxLength(50);
 
                 entity.Property(e => e.MotherEmail).HasMaxLength(100);
 
+                entity.Property(e => e.MotherHelpArea).HasMaxLength(100);
+
                 entity.Property(e => e.MotherName).HasMaxLength(100);
 
+                entity.Property(e => e.MotherOccupation).HasMaxLength(100);
+
                 entity.Property(e => e.MotherPhone).HasMaxLength(50);
-
-                entity.Property(e => e.MotherSpecialty).HasMaxLength(100);
-
-                entity.Property(e => e.MotherWork).HasMaxLength(100);
 
                 entity.Property(e => e.SpokenLanguages)
                     .IsRequired()
@@ -71,18 +69,49 @@ namespace npmsreg.Models
                 entity.Property(e => e.ZipCode).HasMaxLength(50);
             });
 
+            modelBuilder.Entity<Registrations>(entity =>
+            {
+                entity.HasKey(e => new { e.SchoolYear, e.StudentId });
+
+                entity.Property(e => e.Grade)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.Student)
+                    .WithMany(p => p.Registrations)
+                    .HasForeignKey(d => d.StudentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Registrations_Students");
+            });
+
             modelBuilder.Entity<Students>(entity =>
             {
                 entity.Property(e => e.Birthday).HasColumnType("date");
 
                 entity.Property(e => e.ChineseName).HasMaxLength(20);
 
-                entity.Property(e => e.FirstName).HasMaxLength(50);
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(50);
 
-                entity.Property(e => e.Gender).HasMaxLength(10);
+                entity.Property(e => e.Gender)
+                    .IsRequired()
+                    .HasMaxLength(10);
 
-                entity.Property(e => e.LastName).HasMaxLength(50);
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.Family)
+                    .WithMany(p => p.Students)
+                    .HasForeignKey(d => d.FamilyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Students_Families");
             });
+
+            OnModelCreatingPartial(modelBuilder);
         }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

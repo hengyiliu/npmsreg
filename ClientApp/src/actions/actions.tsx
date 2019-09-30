@@ -34,11 +34,9 @@ export function AddFamily(): AddFamilyActionType {
 
 export function GetFamilyData() {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
-    var resp = await fetch('https://reqres.in/api/users/1');
+    var resp = await fetch('/api/families/1');
 
-    var json = await resp.json();
-    var firstName = json.data.first_name;
-    var family: IFamily = { FatherName: firstName };
-    dispatch(GetFamily(family));
+    var json = await resp.json() as IFamily;
+    dispatch(GetFamily(json));
   }
 }

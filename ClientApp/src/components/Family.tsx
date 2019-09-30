@@ -39,11 +39,11 @@ class Family extends Component<IFamilyProps, {}> {
             <div className="form-group row">
               <label htmlFor="fatherName" className="col-sm-2 col-form-label">Father English Name</label>
               <div className="col-sm-4">
-              <input type="text" className="form-control" id="fatherName" placeholder="" value={this.props.family.FatherName} />
+                <input type="text" className="form-control" id="fatherName" placeholder="" value={this.props.family.fatherName} />
               </div>
               <label htmlFor="motherName" className="col-sm-2 col-form-label">Mother English Name</label>
               <div className="col-sm-4">
-                <input type="text" className="form-control" id="motherName" placeholder="" />
+                <input type="text" className="form-control" id="motherName" placeholder="" value={this.props.family.motherName} />
               </div>
             </div>
 
@@ -69,22 +69,22 @@ class Family extends Component<IFamilyProps, {}> {
             <div className="form-group row">
               <label htmlFor="fatherCell" className="col-sm-2 col-form-label">Father Cell</label>
               <div className="col-sm-4">
-                <input type="text" className="form-control" id="fatherCell" placeholder="" />
+                <input type="text" className="form-control" id="fatherCell" placeholder="" value={this.props.family.fatherPhone} />
               </div>
               <label htmlFor="motherCell" className="col-sm-2 col-form-label">Mother Cell</label>
               <div className="col-sm-4">
-                <input type="text" className="form-control" id="motherCell" placeholder="" />
+                <input type="text" className="form-control" id="motherCell" placeholder="" value={this.props.family.motherPhone} />
               </div>
             </div>
 
             <div className="form-group row">
               <label htmlFor="fatherEmail" className="col-sm-2 col-form-label">Father Email</label>
               <div className="col-sm-4">
-                <input type="text" className="form-control" id="fatherEmail" placeholder="" />
+                <input type="text" className="form-control" id="fatherEmail" placeholder="" value={this.props.family.fatherEmail} />
               </div>
               <label htmlFor="motherEmail" className="col-sm-2 col-form-label">Mother Email</label>
               <div className="col-sm-4">
-                <input type="text" className="form-control" id="motherEmail" placeholder="" />
+                <input type="text" className="form-control" id="motherEmail" placeholder="" value={this.props.family.motherEmail} />
               </div>
             </div>
 
