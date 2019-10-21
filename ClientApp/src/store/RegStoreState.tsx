@@ -8,5 +8,5 @@
 }
 
 export interface IRegStoreState {
-  family: any;
+  family: IFamily;
 }

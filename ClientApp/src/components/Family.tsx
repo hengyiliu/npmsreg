@@ -1,25 +1,40 @@
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { GetFamily, FamilyActionType, GetFamilyData } from '../actions/actions';
+import { GetFamily, FamilyActionType, GetFamilyData, UpdateFamilyData } from '../actions/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { IRegStoreState, IFamily } from '../store/RegStoreState';
+import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 
 export interface IFamilyProps {
   family: IFamily;
   getFamily: () => FamilyActionType;
-  getFamilyData: () => Promise<void>;
+  getFamilyData: (id: number) => Promise<void>;
+  updateFamilyData: (family: IFamily) => Promise<void>;
 }
 
-class Family extends Component<IFamilyProps, {}> {
+class Family extends Component<InjectedFormProps<IFamily, IFamilyProps> & IFamilyProps, {}> {
   static displayName: string = Family.name;
 
   public async componentDidMount() {
-    await this.props.getFamilyData();
+    await this.props.getFamilyData(1);
   }
 
   public render() {
     var data = this.props.family;
+    debugger;
+    return (
+      <div>
+        <form>
+        <Field
+          name="fatherName"
+          component="input"
+          type="text"
+          placeholder="Father Name"
+        />
+        </form>
+      </div>)
+/*
     return (
       <div>
         <h2>FamilyDetail</h2>
@@ -109,19 +124,26 @@ class Family extends Component<IFamilyProps, {}> {
         </fieldset>
       </div>
     );
+*/
   }
 }
 
 const mapStateToProps = (state: IRegStoreState) => {
   return {
-    family: state.family
+    family: state.family,
+    initialValues: state.family
   };
 }
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
   return {
-    getFamilyData: () => dispatch(GetFamilyData())
+    getFamilyData: (id: number) => dispatch(GetFamilyData(id)),
+    updateFamilyData: (family: IFamily) => dispatch(UpdateFamilyData(family))
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Family);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  reduxForm<IFamily, IFamilyProps>({
+    form: "Family",
+    enableReinitialize: true
+  })(Family));
