@@ -11,7 +11,6 @@ const defaultState: IFamily = {
 }
 
 export function FamilyReducer(state: IFamily = defaultState, action: FamilyActionType): IFamily {
-  debugger;
   switch (action.type) {
     case FamilyActionsEnum.AddFamily:
       return state;

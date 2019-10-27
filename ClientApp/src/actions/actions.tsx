@@ -47,7 +47,6 @@ export function UpdateFamily(family: IFamily): AddFamilyActionType {
 
 export function GetFamilyData(id: number) {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
-    debugger;
     var resp = await fetch(`/api/families/${id}`);
 
     var json = await resp.json() as IFamily;

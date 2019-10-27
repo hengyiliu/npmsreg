@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { GetFamily, FamilyActionType, GetFamilyData, UpdateFamilyData } from '../actions/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { IRegStoreState, IFamily } from '../store/RegStoreState';
-import { Field, InjectedFormProps, reduxForm } from 'redux-form';
+import { withFormik, Formik, Field, ErrorMessage, FormikProps } from 'formik';
+
 
 export interface IFamilyProps {
   family: IFamily;
@@ -13,7 +14,14 @@ export interface IFamilyProps {
   updateFamilyData: (family: IFamily) => Promise<void>;
 }
 
-class Family extends Component<InjectedFormProps<IFamily, IFamilyProps> & IFamilyProps, {}> {
+const FamilySection = (props: FormikProps<IFamily>) => 
+  <form onSubmit={props.handleSubmit}>
+    <Field type="text" name="fatherName" />
+    <ErrorMessage name="fatherName" />
+  </form>
+;
+
+class Family extends Component<IFamilyProps, {}> {
   static displayName: string = Family.name;
 
   public async componentDidMount() {
@@ -22,18 +30,47 @@ class Family extends Component<InjectedFormProps<IFamily, IFamilyProps> & IFamil
 
   public render() {
     var data = this.props.family;
-    debugger;
     return (
       <div>
-        <form>
-        <Field
-          name="fatherName"
-          component="input"
-          type="text"
-          placeholder="Father Name"
-        />
-        </form>
+        <h1>Family</h1>
+        <Formik
+          enableReinitialize={true}
+          initialValues={this.props.family}
+          onSubmit={(values, actions) => {
+            setTimeout(() => {
+              alert(JSON.stringify(values, null, 2));
+              actions.setSubmitting(false);
+            }, 1000);
+          }}
+          render={FamilySection}
+        >
+        </Formik>
       </div>)
+  }
+}
+
+
+const mapStateToProps = (state: IRegStoreState) => {
+  return {
+    family: state.family,
+    initialValues: state.family
+  };
+}
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
+  return {
+    getFamilyData: (id: number) => dispatch(GetFamilyData(id)),
+    updateFamilyData: (family: IFamily) => dispatch(UpdateFamilyData(family))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Family);
+
+
+
+
+
+
 /*
     return (
       <div>
@@ -125,25 +162,3 @@ class Family extends Component<InjectedFormProps<IFamily, IFamilyProps> & IFamil
       </div>
     );
 */
-  }
-}
-
-const mapStateToProps = (state: IRegStoreState) => {
-  return {
-    family: state.family,
-    initialValues: state.family
-  };
-}
-
-const mapDispatchToProps = (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
-  return {
-    getFamilyData: (id: number) => dispatch(GetFamilyData(id)),
-    updateFamilyData: (family: IFamily) => dispatch(UpdateFamilyData(family))
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(
-  reduxForm<IFamily, IFamilyProps>({
-    form: "Family",
-    enableReinitialize: true
-  })(Family));
