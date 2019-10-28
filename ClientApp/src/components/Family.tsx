@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Form, FormGroup, Input, Label, Container, Row, Col } from 'reactstrap';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { GetFamily, FamilyActionType, GetFamilyData, UpdateFamilyData } from '../actions/actions';
@@ -15,11 +16,40 @@ export interface IFamilyProps {
 }
 
 const FamilySection = (props: FormikProps<IFamily>) => 
-  <form onSubmit={props.handleSubmit}>
-    <Field type="text" name="fatherName" />
-    <ErrorMessage name="fatherName" />
-  </form>
+  <Form onSubmit={props.handleSubmit}>
+    <Container>
+      <Row>
+        <FormGroup row>
+          <Col md={2}><Label for="fatherName">Father Name</Label></Col>
+          <Col md={4}><Input tag={Field} name="fatherName" type="text" /></Col>
+          <Col md={2}><Label for="motherName">Mother Name</Label></Col>
+          <Col md={4}><Input tag={Field} name="motherName" type="text" /></Col>
+        </FormGroup>
+      </Row>
+      <Row>
+        <FormGroup row>
+          <Col md={2}><Label for="fatherEmail">Father Email</Label></Col>
+          <Col md={4}><Input tag={Field} name="fatherEmail" type="email" /></Col>
+          <Col md={2}><Label for="motherEmail">Mother Email</Label></Col>
+          <Col md={4}><Input tag={Field} name="motherEmail" type="email" /></Col>
+        </FormGroup>
+      </Row>
+    </Container>
+  </Form>
 ;
+
+const validateEmail = (values: IFamily) => {
+  let errors: any = {};
+  if (!values.fatherEmail) {
+    errors.fatherEmail = 'Required';
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.fatherEmail)) {
+    errors.fatherEmail = 'Invalid email address';
+  }
+
+  //...
+
+  return errors;
+};
 
 class Family extends Component<IFamilyProps, {}> {
   static displayName: string = Family.name;
@@ -35,6 +65,7 @@ class Family extends Component<IFamilyProps, {}> {
         <h1>Family</h1>
         <Formik
           enableReinitialize={true}
+          validate={validateEmail}
           initialValues={this.props.family}
           onSubmit={(values, actions) => {
             setTimeout(() => {
