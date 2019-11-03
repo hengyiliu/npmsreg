@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Input, Label, Container, Row, Col } from 'reactstrap';
+import { Form, FormGroup, Input, Label, Container, Row, Col, Button } from 'reactstrap';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { GetFamily, FamilyActionType, GetFamilyData, UpdateFamilyData } from '../actions/actions';
@@ -15,26 +15,21 @@ export interface IFamilyProps {
   updateFamilyData: (family: IFamily) => Promise<void>;
 }
 
-const FamilySection = (props: FormikProps<IFamily>) => 
+const FamilySection = (props: FormikProps<IFamily>) =>
   <Form onSubmit={props.handleSubmit}>
-    <Container>
-      <Row>
-        <FormGroup row>
-          <Col md={2}><Label for="fatherName">Father Name</Label></Col>
-          <Col md={4}><Input tag={Field} name="fatherName" type="text" /></Col>
-          <Col md={2}><Label for="motherName">Mother Name</Label></Col>
-          <Col md={4}><Input tag={Field} name="motherName" type="text" /></Col>
-        </FormGroup>
-      </Row>
-      <Row>
-        <FormGroup row>
-          <Col md={2}><Label for="fatherEmail">Father Email</Label></Col>
-          <Col md={4}><Input tag={Field} name="fatherEmail" type="email" /></Col>
-          <Col md={2}><Label for="motherEmail">Mother Email</Label></Col>
-          <Col md={4}><Input tag={Field} name="motherEmail" type="email" /></Col>
-        </FormGroup>
-      </Row>
-    </Container>
+    <FormGroup row>
+      <Col md={2}><Label for="fatherName">Father Name</Label></Col>
+      <Col md={4}><Input tag={Field} name="fatherName" type="text" /></Col>
+      <Col md={2}><Label for="motherName">Mother Name</Label></Col>
+      <Col md={4}><Input tag={Field} name="motherName" type="text" /></Col>
+    </FormGroup>
+    <FormGroup row>
+      <Col md={2}><Label for="fatherEmail">Father Email</Label></Col>
+      <Col md={4}><Input tag={Field} name="fatherEmail" type="email" /></Col>
+      <Col md={2}><Label for="motherEmail">Mother Email</Label></Col>
+      <Col md={4}><Input tag={Field} name="motherEmail" type="email" /></Col>
+    </FormGroup>
+    <Button disabled={props.isSubmitting}>Submit</Button>
   </Form>
 ;
 
@@ -68,10 +63,8 @@ class Family extends Component<IFamilyProps, {}> {
           validate={validateEmail}
           initialValues={this.props.family}
           onSubmit={(values, actions) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              actions.setSubmitting(false);
-            }, 1000);
+            this.props.updateFamilyData(values);
+            actions.setSubmitting(false);
           }}
           render={FamilySection}
         >

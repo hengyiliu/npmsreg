@@ -2,6 +2,7 @@
 import { IRegStoreState, IFamily } from '../store/RegStoreState';
 
 const defaultState: IFamily = {
+  id: 0,
   fatherName: "f",
   motherName: "",
   fatherEmail: "",

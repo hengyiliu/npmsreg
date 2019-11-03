@@ -57,9 +57,8 @@ export function GetFamilyData(id: number) {
 export function UpdateFamilyData(family: IFamily) {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
     console.log(family);
-/*
-    const resp = await fetch("/api/families", {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    const resp = await fetch("/api/families/" + family.id , {
+      method: 'PUT', // *GET, POST, PUT, DELETE, etc.
       headers: {
         'Content-Type': 'application/json'
       },
@@ -68,7 +67,5 @@ export function UpdateFamilyData(family: IFamily) {
 
     var json = await resp.json() as IFamily;
     dispatch(UpdateFamily(json));
-*/
-    dispatch(UpdateFamily(family));
   }
 }
