@@ -3,12 +3,22 @@ import { IRegStoreState, IFamily } from '../store/RegStoreState';
 
 const defaultState: IFamily = {
   id: 0,
-  fatherName: "f",
+  fatherName: "",
   motherName: "",
+  fatherChineseName: "",
+  motherChineseName: "",
+  address: "",
+  city: "",
+  state: "",
+  zipCode: "",
   fatherEmail: "",
   motherEmail: "",
   fatherPhone: "",
-  motherPhone: ""
+  motherPhone: "",
+  fatherOccupation: "",
+  motherOccupation: "",
+  fatherHelpArea: "",
+  motherHelpArea: ""
 }
 
 export function FamilyReducer(state: IFamily = defaultState, action: FamilyActionType): IFamily {

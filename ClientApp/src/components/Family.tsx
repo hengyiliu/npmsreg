@@ -6,9 +6,10 @@ import { GetFamily, FamilyActionType, GetFamilyData, UpdateFamilyData } from '..
 import { ThunkDispatch } from 'redux-thunk';
 import { IRegStoreState, IFamily } from '../store/RegStoreState';
 import { withFormik, Formik, Field, ErrorMessage, FormikProps } from 'formik';
+import { RouteComponentProps } from 'react-router-dom';
 
 
-export interface IFamilyProps {
+export interface IFamilyProps extends RouteComponentProps<{ id: string }> {
   family: IFamily;
   getFamily: () => FamilyActionType;
   getFamilyData: (id: number) => Promise<void>;
@@ -24,11 +25,46 @@ const FamilySection = (props: FormikProps<IFamily>) =>
       <Col md={4}><Input tag={Field} name="motherName" type="text" /></Col>
     </FormGroup>
     <FormGroup row>
+      <Col md={2}><Label for="fatherChineseName">Father Chinese Name</Label></Col>
+      <Col md={4}><Input tag={Field} name="fatherChineseName" type="text" /></Col>
+      <Col md={2}><Label for="motherChineseName">Mother Chinese Name</Label></Col>
+      <Col md={4}><Input tag={Field} name="motherChineseName" type="text" /></Col>
+    </FormGroup>
+    <FormGroup row>
       <Col md={2}><Label for="fatherEmail">Father Email</Label></Col>
       <Col md={4}><Input tag={Field} name="fatherEmail" type="email" /></Col>
       <Col md={2}><Label for="motherEmail">Mother Email</Label></Col>
       <Col md={4}><Input tag={Field} name="motherEmail" type="email" /></Col>
     </FormGroup>
+    <FormGroup row>
+      <Col md={2}><Label for="fatherPhone">Father Phone</Label></Col>
+      <Col md={4}><Input tag={Field} name="fatherPhone" type="text" /></Col>
+      <Col md={2}><Label for="motherPhone">Mother Phone</Label></Col>
+      <Col md={4}><Input tag={Field} name="motherPhone" type="text" /></Col>
+    </FormGroup>
+    <FormGroup row>
+      <Col md={2}><Label for="fatherOccupation">Father Occupation</Label></Col>
+      <Col md={4}><Input tag={Field} name="fatherOccupation" type="text" /></Col>
+      <Col md={2}><Label for="motherOccupation">Mother Occupation</Label></Col>
+      <Col md={4}><Input tag={Field} name="motherOccupation" type="text" /></Col>
+    </FormGroup>
+    <FormGroup row>
+      <Col md={2}><Label for="fatherHelpArea">Father Volunteering</Label></Col>
+      <Col md={4}><Input tag={Field} name="fatherHelpArea" type="text" /></Col>
+      <Col md={2}><Label for="motherHelpArea">Mother Volunteering</Label></Col>
+      <Col md={4}><Input tag={Field} name="motherHelpArea" type="text" /></Col>
+    </FormGroup>
+    <FormGroup row>
+      <Col md={1}><Label for="address">Address</Label></Col>
+      <Col md={3}><Input tag={Field} name="address" type="text" /></Col>
+      <Col md={1}><Label for="city">City</Label></Col>
+      <Col md={2}><Input tag={Field} name="city" type="text" /></Col>
+      <Col md={1}><Label for="state">State</Label></Col>
+      <Col md={1}><Input tag={Field} name="state" type="text" /></Col>
+      <Col md={1}><Label for="zipCode">Zip code</Label></Col>
+      <Col md={2}><Input tag={Field} name="zipCode" type="text" /></Col>
+    </FormGroup>
+
     <Button disabled={props.isSubmitting}>Submit</Button>
   </Form>
 ;
@@ -50,11 +86,12 @@ class Family extends Component<IFamilyProps, {}> {
   static displayName: string = Family.name;
 
   public async componentDidMount() {
-    await this.props.getFamilyData(1);
+    let idstr = this.props.match.params.id;
+    await this.props.getFamilyData(parseInt(idstr));
   }
 
   public render() {
-    var data = this.props.family;
+    let data = this.props.family;
     return (
       <div>
         <h1>Family</h1>
@@ -89,100 +126,3 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyAc
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Family);
-
-
-
-
-
-
-/*
-    return (
-      <div>
-        <h2>FamilyDetail</h2>
-        <fieldset >
-          <legend>Family</legend>
-            <div className="form-group row">
-            <label htmlFor="fatherChineseName" className="col-sm-2 col-form-label">Father Chinese Name</label>
-              <div className="col-sm-4">
-                <input type="text" className="form-control" id="fatherChineseName" placeholder="" />
-              </div>
-            <label htmlFor="motherChineseName" className="col-sm-2 col-form-label">Mother Chinese Name</label>
-                <div className="col-sm-4">
-              <input type="text" className="form-control" id="motherChineseName" placeholder="" />
-              </div>
-            </div>
-
-            <div className="form-group row">
-              <label htmlFor="fatherName" className="col-sm-2 col-form-label">Father English Name</label>
-              <div className="col-sm-4">
-                <input type="text" className="form-control" id="fatherName" placeholder="" value={this.props.family.fatherName} />
-              </div>
-              <label htmlFor="motherName" className="col-sm-2 col-form-label">Mother English Name</label>
-              <div className="col-sm-4">
-                <input type="text" className="form-control" id="motherName" placeholder="" value={this.props.family.motherName} />
-              </div>
-            </div>
-
-            <div className="form-group row">
-              <label htmlFor="address" className="col-sm-1 col-form-label">Address</label>
-              <div className="col-sm-3">
-                <input type="text" className="form-control" id="address" placeholder="" />
-              </div>
-              <label htmlFor="city" className="col-sm-1 col-form-label">City</label>
-              <div className="col-sm-2">
-                <input type="text" className="form-control" id="city" placeholder="" />
-              </div>
-              <label htmlFor="state" className="col-sm-1 col-form-label">State</label>
-              <div className="col-sm-1">
-                <input type="text" className="form-control" id="state" placeholder="" />
-              </div>
-              <label htmlFor="zipcode" className="col-sm-1 col-form-label">Zipcode</label>
-              <div className="col-sm-2">
-                <input type="text" className="form-control" id="zipcode" placeholder="" />
-              </div>
-            </div>
-
-            <div className="form-group row">
-              <label htmlFor="fatherCell" className="col-sm-2 col-form-label">Father Cell</label>
-              <div className="col-sm-4">
-                <input type="text" className="form-control" id="fatherCell" placeholder="" value={this.props.family.fatherPhone} />
-              </div>
-              <label htmlFor="motherCell" className="col-sm-2 col-form-label">Mother Cell</label>
-              <div className="col-sm-4">
-                <input type="text" className="form-control" id="motherCell" placeholder="" value={this.props.family.motherPhone} />
-              </div>
-            </div>
-
-            <div className="form-group row">
-              <label htmlFor="fatherEmail" className="col-sm-2 col-form-label">Father Email</label>
-              <div className="col-sm-4">
-                <input type="text" className="form-control" id="fatherEmail" placeholder="" value={this.props.family.fatherEmail} />
-              </div>
-              <label htmlFor="motherEmail" className="col-sm-2 col-form-label">Mother Email</label>
-              <div className="col-sm-4">
-                <input type="text" className="form-control" id="motherEmail" placeholder="" value={this.props.family.motherEmail} />
-              </div>
-            </div>
-
-            <div className="form-group row">
-              <label htmlFor="fatherOccupation" className="col-sm-2 col-form-label">Father Occupation</label>
-              <div className="col-sm-4">
-              <input type="text" className="form-control" id="fatherOccupation" placeholder="" />
-              </div>
-              <label htmlFor="motherOccupation" className="col-sm-2 col-form-label">Mother Occupation</label>
-              <div className="col-sm-4">
-              <input type="text" className="form-control" id="motherOccupation" placeholder="" />
-              </div>
-            </div>
-
-            <div className="form-group row">
-              <label htmlFor="languageSpoken" className="col-sm-2 col-form-label">Language Spoken at home</label>
-              <div className="col-sm-4">
-                <input type="text" className="form-control" id="fatherOccupation" placeholder="" />
-              </div>
-            </div>
-
-        </fieldset>
-      </div>
-    );
-*/
