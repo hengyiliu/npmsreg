@@ -41,7 +41,7 @@ The project contains both server (in .NET Core) and client (React in TypeScript)
 - Launch Visual Studio Code and open folder npmsreg
 - Click Debug menu -> Start Debugging. It will start a local web server and launch Chrome browser to https://localhost:5001
 - Go to https://localhost:5001/api/Families in the browser, it will return all families in Json format. The server REST API is working.
-- Go to https://localhost:5001/Family, and it should return a UI page with some family detail. The client React page is working.
+- Go to https://localhost:5001/Family/1, and it should return a UI page with some family detail. The client React page is working.
 
 
 ### How to generate models from database
