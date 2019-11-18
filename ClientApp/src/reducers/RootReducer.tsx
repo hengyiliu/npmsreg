@@ -2,7 +2,7 @@
 import { FamilyReducer } from "./FamilyReducer";
 import { IRegStoreState } from "../store/RegStoreState";
 
-export const RootReducer: Reducer<IRegStoreState> = combineReducers<IRegStoreState>({
+export const RootReducer: Reducer<IRegStoreState> = combineReducers<any>({
   family: FamilyReducer
 });
 

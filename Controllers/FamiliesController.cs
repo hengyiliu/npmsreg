@@ -45,7 +45,7 @@ namespace npmsreg.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutFamilies(int id, Families families)
+        public async Task<ActionResult<Families>> PutFamilies(int id, Families families)
         {
             if (id != families.Id)
             {
@@ -70,7 +70,8 @@ namespace npmsreg.Controllers
                 }
             }
 
-            return NoContent();
+            var updatedFamilies = await _context.Families.FindAsync(id);
+            return updatedFamilies;
         }
 
         // POST: api/Families

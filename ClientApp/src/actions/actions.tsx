@@ -4,19 +4,25 @@ import { ThunkDispatch } from "redux-thunk";
 export enum FamilyActionsEnum {
   GetFamily = "GET_FAMILY",
   AddFamily = "ADD_FAMILY",
+  UpdateFamily = "UPDATE_FAMILY"
 }
 
 export interface GetFamilyActionType {
   type: FamilyActionsEnum,
-  payload: any
+  payload: IFamily
 }
 
 export interface AddFamilyActionType {
   type: FamilyActionsEnum,
-  payload: any
+  payload: IFamily
 }
 
-export type FamilyActionType = GetFamilyActionType | AddFamilyActionType;
+export interface UpdateFamilyActionType {
+  type: FamilyActionsEnum,
+  payload: IFamily
+}
+
+export type FamilyActionType = GetFamilyActionType | AddFamilyActionType | UpdateFamilyActionType;
 
 export function GetFamily(family: IFamily): GetFamilyActionType {
   return {
@@ -25,18 +31,41 @@ export function GetFamily(family: IFamily): GetFamilyActionType {
   };
 }
 
-export function AddFamily(): AddFamilyActionType {
+export function AddFamily(family: IFamily): AddFamilyActionType {
   return {
     type: FamilyActionsEnum.AddFamily,
-    payload: null
+    payload: family
   };
 }
 
-export function GetFamilyData() {
+export function UpdateFamily(family: IFamily): AddFamilyActionType {
+  return {
+    type: FamilyActionsEnum.UpdateFamily,
+    payload: family
+  };
+}
+
+export function GetFamilyData(id: number) {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
-    var resp = await fetch('/api/families/1');
+    var resp = await fetch(`/api/families/${id}`);
 
     var json = await resp.json() as IFamily;
     dispatch(GetFamily(json));
+  }
+}
+
+export function UpdateFamilyData(family: IFamily) {
+  return async (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
+    console.log(family);
+    const resp = await fetch("/api/families/" + family.id , {
+      method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(family)
+    });
+
+    var json = await resp.json() as IFamily;
+    dispatch(UpdateFamily(json));
   }
 }
