@@ -18,7 +18,8 @@ const defaultState: IFamily = {
   fatherOccupation: "",
   motherOccupation: "",
   fatherHelpArea: "",
-  motherHelpArea: ""
+  motherHelpArea: "",
+  spokenLanguages: "",
 }
 
 export function FamilyReducer(state: IFamily = defaultState, action: FamilyActionType): IFamily {

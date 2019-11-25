@@ -16,6 +16,7 @@
   motherOccupation: string;
   fatherHelpArea: string;
   motherHelpArea: string;
+  spokenLanguages: string;
 }
 
 export interface IRegStoreState {

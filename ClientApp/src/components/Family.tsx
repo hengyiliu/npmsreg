@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Input, Label, Container, Row, Col, Button } from 'reactstrap';
+import { Form, FormGroup, Input, Label, Container, Row, Col, Button, FormFeedback } from 'reactstrap';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { GetFamily, FamilyActionType, GetFamilyData, UpdateFamilyData } from '../actions/actions';
@@ -14,9 +14,10 @@ export interface IFamilyProps extends RouteComponentProps<{ id: string }> {
   getFamily: () => FamilyActionType;
   getFamilyData: (id: number) => Promise<void>;
   updateFamilyData: (family: IFamily) => Promise<void>;
+  createFamilyData: (family: IFamily) => Promise<void>;
 }
 
-const FamilySection = (props: FormikProps<IFamily>) =>
+export const FamilySection = (props: FormikProps<IFamily>) =>
   <Form onSubmit={props.handleSubmit}>
     <FormGroup row>
       <Col md={2}><Label for="fatherName">Father Name</Label></Col>
@@ -32,7 +33,7 @@ const FamilySection = (props: FormikProps<IFamily>) =>
     </FormGroup>
     <FormGroup row>
       <Col md={2}><Label for="fatherEmail">Father Email</Label></Col>
-      <Col md={4}><Input tag={Field} name="fatherEmail" type="email" /></Col>
+      <Col md={4}><Input tag={Field} name="fatherEmail" type="email" /><ErrorMessage name="fatherEmail" /></Col>
       <Col md={2}><Label for="motherEmail">Mother Email</Label></Col>
       <Col md={4}><Input tag={Field} name="motherEmail" type="email" /></Col>
     </FormGroup>
@@ -53,6 +54,10 @@ const FamilySection = (props: FormikProps<IFamily>) =>
       <Col md={4}><Input tag={Field} name="fatherHelpArea" type="text" /></Col>
       <Col md={2}><Label for="motherHelpArea">Mother Volunteering</Label></Col>
       <Col md={4}><Input tag={Field} name="motherHelpArea" type="text" /></Col>
+    </FormGroup>
+    <FormGroup row>
+      <Col md={2}><Label for="spokenLanguages">Languages at home</Label></Col>
+      <Col md={4}><Input tag={Field} name="spokenLanguages" type="text" /></Col>
     </FormGroup>
     <FormGroup row>
       <Col md={1}><Label for="address">Address</Label></Col>
