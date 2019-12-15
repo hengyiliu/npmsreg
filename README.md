@@ -5,7 +5,7 @@ The project is a standard web app with some REST APIs written in C# in .NET Core
 
 ### Prerequisite
 For Mac and Windows, please install the following developer tools (they are all cross platform and work in Mac, Windows or Linux).
-- .NET Core SDK 3.0 https://dotnet.microsoft.com/download/dotnet-core/3.0 (Build apps - SDK, choose your platform)
+- .NET Core SDK 3.1 https://dotnet.microsoft.com/download/dotnet-core/3.1 (Build apps - SDK, choose your platform)
 - Visual Studio Code https://code.visualstudio.com/, a light weight editor/debugger/IDE for any programming languages, especially good for TypeScript/C#.
 - C# extension for VS Code. https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp
 - Debugger for Chrome extension for VS code. https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
