@@ -4,14 +4,14 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { GetFamily, FamilyActionType, GetFamilyData, UpdateFamilyData } from '../actions/actions';
 import { ThunkDispatch } from 'redux-thunk';
-import { IRegStoreState, IFamily } from '../store/RegStoreState';
+import { IRegStoreState, IFamily, IStudent } from '../store/RegStoreState';
 import { withFormik, Formik, Field, ErrorMessage, FormikProps } from 'formik';
 import { RouteComponentProps } from 'react-router-dom';
 
 
 export interface IFamilyProps extends RouteComponentProps<{ id: string }> {
   family: IFamily;
-  getFamily: () => FamilyActionType;
+  students: IStudent[];
   getFamilyData: (id: number) => Promise<void>;
   updateFamilyData: (family: IFamily) => Promise<void>;
   createFamilyData: (family: IFamily) => Promise<void>;
@@ -70,6 +70,11 @@ export const FamilySection = (props: FormikProps<IFamily>) =>
       <Col md={2}><Input tag={Field} name="zipCode" type="text" /></Col>
     </FormGroup>
 
+    <FormGroup row>
+      <Col md={2}><Label for="stundetFirstName">Student First Name</Label></Col>
+      <Col md={4}><Input tag={Field} name="students[0].firstName" type="text" /></Col>
+    </FormGroup>
+
     <Button disabled={props.isSubmitting}>Submit</Button>
   </Form>
 ;
@@ -96,14 +101,14 @@ class Family extends Component<IFamilyProps, {}> {
   }
 
   public render() {
-    let data = this.props.family;
+    let data = { ...this.props.family, students: this.props.students };
     return (
       <div>
         <h1>Family</h1>
         <Formik
           enableReinitialize={true}
           validate={validateEmail}
-          initialValues={this.props.family}
+          initialValues={data}
           onSubmit={(values, actions) => {
             this.props.updateFamilyData(values);
             actions.setSubmitting(false);
@@ -119,6 +124,7 @@ class Family extends Component<IFamilyProps, {}> {
 const mapStateToProps = (state: IRegStoreState) => {
   return {
     family: state.family,
+    students: state.students,
     initialValues: state.family
   };
 }

@@ -11,11 +11,13 @@ import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import { IRegStoreState } from './store/RegStoreState';
 import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const baseUrl: string = document.getElementsByTagName('base')[0].getAttribute('href') || '';
 const rootElement = document.getElementById('root');
 
-const store: Store<IRegStoreState> = createStore(RootReducer, applyMiddleware(thunk));
+const store: Store<IRegStoreState> = createStore(RootReducer, composeWithDevTools(
+  applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Provider store={store}>

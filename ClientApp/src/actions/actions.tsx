@@ -1,10 +1,14 @@
-﻿import { IRegStoreState, IFamily } from "../store/RegStoreState";
+﻿import { IRegStoreState, IFamily, IStudent } from "../store/RegStoreState";
 import { ThunkDispatch } from "redux-thunk";
 
 export enum FamilyActionsEnum {
   GetFamily = "GET_FAMILY",
   AddFamily = "ADD_FAMILY",
-  UpdateFamily = "UPDATE_FAMILY"
+  UpdateFamily = "UPDATE_FAMILY",
+}
+
+export enum StudentActionsEnum {
+  GetFamilyStudents = "GET_FAMILY_STUDENTS"
 }
 
 export interface GetFamilyActionType {
@@ -22,7 +26,13 @@ export interface UpdateFamilyActionType {
   payload: IFamily
 }
 
+export interface GetFamilyStudentsActionType {
+  type: StudentActionsEnum,
+  payload: IStudent[]
+}
+
 export type FamilyActionType = GetFamilyActionType | AddFamilyActionType | UpdateFamilyActionType;
+export type AllActionType = GetFamilyActionType | AddFamilyActionType | UpdateFamilyActionType | GetFamilyStudentsActionType;
 
 export function GetFamily(family: IFamily): GetFamilyActionType {
   return {
@@ -45,12 +55,22 @@ export function UpdateFamily(family: IFamily): AddFamilyActionType {
   };
 }
 
-export function GetFamilyData(id: number) {
-  return async (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
-    var resp = await fetch(`/api/families/${id}`);
+export function GetFamilyStudents(students: IStudent[]): GetFamilyStudentsActionType {
+  return {
+    type: StudentActionsEnum.GetFamilyStudents,
+    payload: students
+  };
+}
 
-    var json = await resp.json() as IFamily;
+export function GetFamilyData(id: number) {
+  return async (dispatch: ThunkDispatch<IRegStoreState, {}, AllActionType>) => {
+    let resp = await fetch(`/api/families/${id}`);
+    let json = await resp.json() as IFamily;
     dispatch(GetFamily(json));
+
+    let studentsResp = await fetch(`/api/families/${id}/students`);
+    let studentsJson = await studentsResp.json() as IStudent[];
+    dispatch(GetFamilyStudents(studentsJson));
   }
 }
 

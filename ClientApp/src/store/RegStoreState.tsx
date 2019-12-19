@@ -19,6 +19,17 @@
   spokenLanguages: string;
 }
 
+export interface IStudent {
+  id: number;
+  familyId: number;
+  firstName: string;
+  lastName: string;
+  chineseName: string;
+  gender: string;
+  birthday: Date;
+}
+
 export interface IRegStoreState {
   family: IFamily;
+  students: IStudent[]
 }
