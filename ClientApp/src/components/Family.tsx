@@ -17,7 +17,19 @@ export interface IFamilyProps extends RouteComponentProps<{ id: string }> {
   createFamilyData: (family: IFamily) => Promise<void>;
 }
 
-export const FamilySection = (props: FormikProps<IFamily>) =>
+export const FamilySection = (props: FormikProps<IFamily & { students: IStudent[] }>) => {
+  let children = []; // in loop i try created components
+
+  for (var i = 0; i < props.values.students.length; i += 1) {
+    let name = "students[" + i + "].firstName";
+    children.push(
+      <FormGroup row>
+        <Col md={2}><Label for="stundetFirstName">Student First Name</Label></Col>
+        <Col md={4}><Input tag={Field} name={`students[${i}].firstName`} type="text" /></Col>
+      </FormGroup>);
+  }
+
+  return (
   <Form onSubmit={props.handleSubmit}>
     <FormGroup row>
       <Col md={2}><Label for="fatherName">Father Name</Label></Col>
@@ -75,8 +87,11 @@ export const FamilySection = (props: FormikProps<IFamily>) =>
       <Col md={4}><Input tag={Field} name="students[0].firstName" type="text" /></Col>
     </FormGroup>
 
+    {children}
+
     <Button disabled={props.isSubmitting}>Submit</Button>
-  </Form>
+  </Form>)
+}
 ;
 
 const validateEmail = (values: IFamily) => {
