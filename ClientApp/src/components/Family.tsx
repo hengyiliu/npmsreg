@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Input, Label, Container, Row, Col, Button, FormFeedback } from 'reactstrap';
+import { Form, FormGroup, Input, Label, Container, Row, Col, Button, Table } from 'reactstrap';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { GetFamily, FamilyActionType, GetFamilyData, UpdateFamilyData } from '../actions/actions';
@@ -17,20 +17,44 @@ export interface IFamilyProps extends RouteComponentProps<{ id: string }> {
   createFamilyData: (family: IFamily) => Promise<void>;
 }
 
-export const FamilySection = (props: FormikProps<IFamily & { students: IStudent[] }>) => {
+const StudentList = (props: { students: IStudent[] }) => {
   let children = []; // in loop i try created components
-
-  for (var i = 0; i < props.values.students.length; i += 1) {
+  for (var i = 0; i < props.students.length; i += 1) {
     let name = "students[" + i + "].firstName";
+    let sid = props.students[i].id;
     children.push(
-      <FormGroup row>
-        <Col md={2}><Label for="stundetFirstName">Student First Name</Label></Col>
-        <Col md={4}><Input tag={Field} name={`students[${i}].firstName`} type="text" /></Col>
-      </FormGroup>);
+      <tr key={sid}>
+        <td>{sid}</td>
+        <td><Input tag={Field} name={`students[${i}].firstName`} type="text" /></td>
+        <td><Input tag={Field} name={`students[${i}].lastName`} type="text" /></td>
+        <td><Input tag={Field} name={`students[${i}].chineseName`} type="text" /></td>
+        <td><Input tag={Field} name={`students[${i}].birthday`} type="text" /></td>
+        <td><Input tag={Field} name={`students[${i}].gender`} type="text" /></td>
+      </tr>);
   }
 
   return (
-  <Form onSubmit={props.handleSubmit}>
+    <Table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Chinese Name</th>
+          <th>Birthday</th>
+          <th>Gender</th>
+        </tr>
+      </thead>
+      <tbody>
+        {children}
+      </tbody>
+    </Table>
+  );
+}
+
+export const FamilySection = (props: { family: IFamily & { students: IStudent[] } }) => {
+  return (
+  <>
     <FormGroup row>
       <Col md={2}><Label for="fatherName">Father Name</Label></Col>
       <Col md={4}><Input tag={Field} name="fatherName" type="text" /></Col>
@@ -82,17 +106,8 @@ export const FamilySection = (props: FormikProps<IFamily & { students: IStudent[
       <Col md={2}><Input tag={Field} name="zipCode" type="text" /></Col>
     </FormGroup>
 
-    <FormGroup row>
-      <Col md={2}><Label for="stundetFirstName">Student First Name</Label></Col>
-      <Col md={4}><Input tag={Field} name="students[0].firstName" type="text" /></Col>
-    </FormGroup>
-
-    {children}
-
-    <Button disabled={props.isSubmitting}>Submit</Button>
-  </Form>)
-}
-;
+  </>)
+};
 
 const validateEmail = (values: IFamily) => {
   let errors: any = {};
@@ -118,20 +133,25 @@ class Family extends Component<IFamilyProps, {}> {
   public render() {
     let data = { ...this.props.family, students: this.props.students };
     return (
-      <div>
-        <h1>Family</h1>
-        <Formik
-          enableReinitialize={true}
-          validate={validateEmail}
-          initialValues={data}
-          onSubmit={(values, actions) => {
-            this.props.updateFamilyData(values);
-            actions.setSubmitting(false);
-          }}
-          render={FamilySection}
-        >
-        </Formik>
-      </div>)
+      <Formik
+        enableReinitialize={true}
+        validate={validateEmail}
+        initialValues={data}
+        onSubmit={(values, actions) => {
+          this.props.updateFamilyData(values);
+          actions.setSubmitting(false);
+        }}
+      >
+        {props =>
+          <Form onSubmit={props.handleSubmit}>
+            <h1>Family</h1>
+            <FamilySection family={props.values} />
+            <h2>Students</h2>
+            <StudentList students={props.values.students} />
+            <Button disabled={props.isSubmitting}>Submit</Button>
+          </Form>
+        }
+      </Formik>);
   }
 }
 

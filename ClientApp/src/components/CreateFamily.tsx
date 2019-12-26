@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { GetFamily, FamilyActionType, GetFamilyData, CreateFamilyData } from '../actions/actions';
 import { ThunkDispatch } from 'redux-thunk';
-import { IRegStoreState, IFamily } from '../store/RegStoreState';
+import { IRegStoreState, IFamily, IStudent } from '../store/RegStoreState';
 import { withFormik, Formik, Field, ErrorMessage, FormikProps } from 'formik';
 import { RouteComponentProps } from 'react-router-dom';
 import { FamilySection, IFamilyProps } from './Family';
@@ -28,21 +28,27 @@ class CreateFamily extends Component<IFamilyProps, {}> {
   }
 
   public render() {
+    let data = { ...this.props.family, students: this.props.students };
+
     return (
-      <div>
-        <h1>Add New Family</h1>
-        <Formik
-          enableReinitialize={true}
-          initialValues={this.props.family}
-          validate={validateEmail}
-          onSubmit={(values, actions) => {
-            this.props.createFamilyData(values);
-            actions.setSubmitting(false);
-          }}
-          render={FamilySection}
-        >
-        </Formik>
-      </div>)
+      <Formik
+        enableReinitialize={true}
+        initialValues={data}
+        validate={validateEmail}
+        onSubmit={(values, actions) => {
+          this.props.createFamilyData(values);
+          actions.setSubmitting(false);
+        }}
+      >
+        {props =>
+          <Form onSubmit={props.handleSubmit}>
+            <h1>Add New Family</h1>
+            <FamilySection family={props.values} />
+            <Button disabled={props.isSubmitting}>Submit</Button>
+          </Form>
+        }
+
+      </Formik>);
   }
 }
 
