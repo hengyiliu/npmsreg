@@ -1,24 +1,60 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Input, Label, Container, Row, Col, Button, FormFeedback } from 'reactstrap';
+import { Form, FormGroup, Input, Label, Container, Row, Col, Button, Table } from 'reactstrap';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { GetFamily, FamilyActionType, GetFamilyData, UpdateFamilyData } from '../actions/actions';
 import { ThunkDispatch } from 'redux-thunk';
-import { IRegStoreState, IFamily } from '../store/RegStoreState';
+import { IRegStoreState, IFamily, IStudent } from '../store/RegStoreState';
 import { withFormik, Formik, Field, ErrorMessage, FormikProps } from 'formik';
 import { RouteComponentProps } from 'react-router-dom';
 
 
 export interface IFamilyProps extends RouteComponentProps<{ id: string }> {
   family: IFamily;
-  getFamily: () => FamilyActionType;
+  students: IStudent[];
   getFamilyData: (id: number) => Promise<void>;
   updateFamilyData: (family: IFamily) => Promise<void>;
   createFamilyData: (family: IFamily) => Promise<void>;
 }
 
-export const FamilySection = (props: FormikProps<IFamily>) =>
-  <Form onSubmit={props.handleSubmit}>
+const StudentList = (props: { students: IStudent[] }) => {
+  let children = []; // in loop i try created components
+  for (var i = 0; i < props.students.length; i += 1) {
+    let name = "students[" + i + "].firstName";
+    let sid = props.students[i].id;
+    children.push(
+      <tr key={sid}>
+        <td>{sid}</td>
+        <td><Input tag={Field} name={`students[${i}].firstName`} type="text" /></td>
+        <td><Input tag={Field} name={`students[${i}].lastName`} type="text" /></td>
+        <td><Input tag={Field} name={`students[${i}].chineseName`} type="text" /></td>
+        <td><Input tag={Field} name={`students[${i}].birthday`} type="text" /></td>
+        <td><Input tag={Field} name={`students[${i}].gender`} type="text" /></td>
+      </tr>);
+  }
+
+  return (
+    <Table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Chinese Name</th>
+          <th>Birthday</th>
+          <th>Gender</th>
+        </tr>
+      </thead>
+      <tbody>
+        {children}
+      </tbody>
+    </Table>
+  );
+}
+
+export const FamilySection = (props: { family: IFamily & { students: IStudent[] } }) => {
+  return (
+  <>
     <FormGroup row>
       <Col md={2}><Label for="fatherName">Father Name</Label></Col>
       <Col md={4}><Input tag={Field} name="fatherName" type="text" /></Col>
@@ -70,9 +106,8 @@ export const FamilySection = (props: FormikProps<IFamily>) =>
       <Col md={2}><Input tag={Field} name="zipCode" type="text" /></Col>
     </FormGroup>
 
-    <Button disabled={props.isSubmitting}>Submit</Button>
-  </Form>
-;
+  </>)
+};
 
 const validateEmail = (values: IFamily) => {
   let errors: any = {};
@@ -96,22 +131,27 @@ class Family extends Component<IFamilyProps, {}> {
   }
 
   public render() {
-    let data = this.props.family;
+    let data = { ...this.props.family, students: this.props.students };
     return (
-      <div>
-        <h1>Family</h1>
-        <Formik
-          enableReinitialize={true}
-          validate={validateEmail}
-          initialValues={this.props.family}
-          onSubmit={(values, actions) => {
-            this.props.updateFamilyData(values);
-            actions.setSubmitting(false);
-          }}
-          render={FamilySection}
-        >
-        </Formik>
-      </div>)
+      <Formik
+        enableReinitialize={true}
+        validate={validateEmail}
+        initialValues={data}
+        onSubmit={(values, actions) => {
+          this.props.updateFamilyData(values);
+          actions.setSubmitting(false);
+        }}
+      >
+        {props =>
+          <Form onSubmit={props.handleSubmit}>
+            <h1>Family</h1>
+            <FamilySection family={props.values} />
+            <h2>Students</h2>
+            <StudentList students={props.values.students} />
+            <Button disabled={props.isSubmitting}>Submit</Button>
+          </Form>
+        }
+      </Formik>);
   }
 }
 
@@ -119,6 +159,7 @@ class Family extends Component<IFamilyProps, {}> {
 const mapStateToProps = (state: IRegStoreState) => {
   return {
     family: state.family,
+    students: state.students,
     initialValues: state.family
   };
 }

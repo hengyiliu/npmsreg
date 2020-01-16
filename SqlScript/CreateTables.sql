@@ -1,4 +1,7 @@
-﻿USE [School]
+﻿Create database School
+GO
+
+USE [School]
 GO
 
 /****** Object:  Table [dbo].[Families]    Script Date: 8/25/2019 2:35:50 PM ******/

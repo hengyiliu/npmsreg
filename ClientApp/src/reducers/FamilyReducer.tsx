@@ -1,5 +1,5 @@
-﻿import { FamilyActionType, FamilyActionsEnum } from '../actions/actions';
-import { IRegStoreState, IFamily } from '../store/RegStoreState';
+﻿import { FamilyActionType, FamilyActionsEnum, GetFamilyStudentsActionType, StudentActionsEnum } from '../actions/actions';
+import { IRegStoreState, IFamily, IStudent } from '../store/RegStoreState';
 
 const defaultState: IFamily = {
   id: 0,
@@ -22,6 +22,16 @@ const defaultState: IFamily = {
   spokenLanguages: "",
 }
 
+const defaultStudentState: IStudent = {
+  id: 0,
+  familyId: 0,
+  firstName: "",
+  lastName: "",
+  chineseName: "",
+  gender: "",
+  birthday: new Date("2010-01-01")
+}
+
 export function FamilyReducer(state: IFamily = defaultState, action: FamilyActionType): IFamily {
   switch (action.type) {
     case FamilyActionsEnum.AddFamily:
@@ -33,4 +43,14 @@ export function FamilyReducer(state: IFamily = defaultState, action: FamilyActio
     default:
       return state;
   }
+}
+
+export function StudentReducer(state: IStudent[] = [defaultStudentState], action: GetFamilyStudentsActionType): IStudent[] {
+  switch (action.type) {
+    case StudentActionsEnum.GetFamilyStudents:
+      return action.payload;
+    default:
+      return state;
+  }
+
 }

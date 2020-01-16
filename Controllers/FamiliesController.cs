@@ -41,6 +41,20 @@ namespace npmsreg.Controllers
             return families;
         }
 
+        // GET: api/Families/5/Students
+        [HttpGet("{id}/students")]
+        public async Task<ActionResult<IEnumerable<Students>>> GetStudentsForFamily(int id)
+        {
+            var students = await _context.Students.Where(s => s.FamilyId == id).ToListAsync();
+
+            if (students == null)
+            {
+                return NotFound();
+            }
+
+            return students;
+        }
+
         // PUT: api/Families/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
