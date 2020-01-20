@@ -5,52 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using npmsreg.Helpers;
 using npmsreg.Models;
 
 namespace npmsreg.Controllers
 {
-    public class StudentRegistration
-    {
-        public StudentRegistration()
-        {
-        }
-
-        public StudentRegistration(Students s, Registrations r)
-        {
-            Id = s.Id;
-            FamilyId = s.FamilyId;
-            FirstName = s.FirstName;
-            LastName = s.LastName;
-            ChineseName = s.ChineseName;
-            Birthday = s.Birthday;
-            Gender = s.Gender;
-            Grade = string.Empty;
-            if (r != null)
-            {
-                Grade = r.Grade;
-            }
-        }
-        public int Id { get; set; }
-        public int FamilyId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string ChineseName { get; set; }
-        public DateTime Birthday { get; set; }
-        public string Gender { get; set; }
-        public string Grade { get; set; }
-    }
-
-    public static class StudentsExtension
-    {
-        public static void CopyFrom(this Students s, StudentRegistration sr)
-        {
-            s.ChineseName = sr.ChineseName;
-            s.FirstName = sr.FirstName;
-            s.LastName = sr.LastName;
-            s.Gender = sr.Gender;
-            s.Birthday = sr.Birthday;
-        }
-    }
 
     [Route("api/[controller]")]
     [ApiController]
@@ -93,6 +52,7 @@ namespace npmsreg.Controllers
                 var currentReg = stu.Registrations.FirstOrDefault(r => r.SchoolYear == schoolYear);
                 if (string.IsNullOrWhiteSpace(sr.Grade))
                 {
+                    // remove registration if Grade is empty
                     if (currentReg != null)
                     {
                         stu.Registrations.Remove(currentReg);
