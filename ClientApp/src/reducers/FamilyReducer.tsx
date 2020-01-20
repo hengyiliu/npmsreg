@@ -20,6 +20,7 @@ const defaultState: IFamily = {
   fatherHelpArea: "",
   motherHelpArea: "",
   spokenLanguages: "",
+  students: []
 }
 
 const defaultStudentState: IStudent = {
@@ -29,7 +30,8 @@ const defaultStudentState: IStudent = {
   lastName: "",
   chineseName: "",
   gender: "",
-  birthday: new Date("2010-01-01")
+  birthday: new Date("2010-01-01"),
+  grade: ""
 }
 
 export function FamilyReducer(state: IFamily = defaultState, action: FamilyActionType): IFamily {
@@ -48,6 +50,8 @@ export function FamilyReducer(state: IFamily = defaultState, action: FamilyActio
 export function StudentReducer(state: IStudent[] = [defaultStudentState], action: GetFamilyStudentsActionType): IStudent[] {
   switch (action.type) {
     case StudentActionsEnum.GetFamilyStudents:
+      return action.payload;
+    case StudentActionsEnum.UpdateStudents:
       return action.payload;
     default:
       return state;

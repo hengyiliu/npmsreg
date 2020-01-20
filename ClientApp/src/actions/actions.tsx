@@ -8,7 +8,8 @@ export enum FamilyActionsEnum {
 }
 
 export enum StudentActionsEnum {
-  GetFamilyStudents = "GET_FAMILY_STUDENTS"
+  GetFamilyStudents = "GET_FAMILY_STUDENTS",
+  UpdateStudents = "UPDATE_STUDENTS",
 }
 
 export interface GetFamilyActionType {
@@ -62,6 +63,13 @@ export function GetFamilyStudents(students: IStudent[]): GetFamilyStudentsAction
   };
 }
 
+export function UpdateStudents(students: IStudent[]): GetFamilyStudentsActionType {
+  return {
+    type: StudentActionsEnum.UpdateStudents,
+    payload: students
+  };
+}
+
 export function GetFamilyData(id: number) {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, AllActionType>) => {
     let resp = await fetch(`/api/families/${id}`);
@@ -75,18 +83,29 @@ export function GetFamilyData(id: number) {
 }
 
 export function UpdateFamilyData(family: IFamily) {
-  return async (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
+  return async (dispatch: ThunkDispatch<IRegStoreState, {}, AllActionType>) => {
     console.log(family);
     const resp = await fetch("/api/families/" + family.id , {
-      method: 'PUT', // *GET, POST, PUT, DELETE, etc.
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(family)
     });
 
-    var json = await resp.json() as IFamily;
+    let json = await resp.json() as IFamily;
     dispatch(UpdateFamily(json));
+
+    const stresp = await fetch("/api/students/", {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(family.students)
+    });
+
+    let stjson = await stresp.json() as IStudent[];
+    dispatch(UpdateStudents(stjson));
   }
 }
 

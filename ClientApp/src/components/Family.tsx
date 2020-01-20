@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { GetFamily, FamilyActionType, GetFamilyData, UpdateFamilyData } from '../actions/actions';
 import { ThunkDispatch } from 'redux-thunk';
-import { IRegStoreState, IFamily, IStudent } from '../store/RegStoreState';
+import { IRegStoreState, IFamily, IStudent, IFamilyStudents } from '../store/RegStoreState';
 import { withFormik, Formik, Field, ErrorMessage, FormikProps } from 'formik';
 import { RouteComponentProps } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ export interface IFamilyProps extends RouteComponentProps<{ id: string }> {
   family: IFamily;
   students: IStudent[];
   getFamilyData: (id: number) => Promise<void>;
-  updateFamilyData: (family: IFamily) => Promise<void>;
+  updateFamilyData: (family: IFamilyStudents) => Promise<void>;
   createFamilyData: (family: IFamily) => Promise<void>;
 }
 
@@ -30,6 +30,7 @@ const StudentList = (props: { students: IStudent[] }) => {
         <td><Input tag={Field} name={`students[${i}].chineseName`} type="text" /></td>
         <td><Input tag={Field} name={`students[${i}].birthday`} type="text" /></td>
         <td><Input tag={Field} name={`students[${i}].gender`} type="text" /></td>
+        <td><Input tag={Field} name={`students[${i}].grade`} type="text" /></td>
       </tr>);
   }
 
@@ -43,6 +44,7 @@ const StudentList = (props: { students: IStudent[] }) => {
           <th>Chinese Name</th>
           <th>Birthday</th>
           <th>Gender</th>
+          <th>Grade</th>
         </tr>
       </thead>
       <tbody>
@@ -52,7 +54,7 @@ const StudentList = (props: { students: IStudent[] }) => {
   );
 }
 
-export const FamilySection = (props: { family: IFamily & { students: IStudent[] } }) => {
+export const FamilySection = (props: { family: IFamilyStudents }) => {
   return (
   <>
     <FormGroup row>
@@ -131,13 +133,14 @@ class Family extends Component<IFamilyProps, {}> {
   }
 
   public render() {
-    let data = { ...this.props.family, students: this.props.students };
+    let data: IFamilyStudents = { ...this.props.family, students: this.props.students };
     return (
       <Formik
         enableReinitialize={true}
         validate={validateEmail}
         initialValues={data}
         onSubmit={(values, actions) => {
+          debugger;
           this.props.updateFamilyData(values);
           actions.setSubmitting(false);
         }}
@@ -167,7 +170,7 @@ const mapStateToProps = (state: IRegStoreState) => {
 const mapDispatchToProps = (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
   return {
     getFamilyData: (id: number) => dispatch(GetFamilyData(id)),
-    updateFamilyData: (family: IFamily) => dispatch(UpdateFamilyData(family))
+    updateFamilyData: (family: IFamilyStudents) => dispatch(UpdateFamilyData(family))
   };
 }
 

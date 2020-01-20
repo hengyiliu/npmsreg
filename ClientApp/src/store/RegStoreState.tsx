@@ -17,6 +17,7 @@
   fatherHelpArea: string;
   motherHelpArea: string;
   spokenLanguages: string;
+  students: IStudent[];
 }
 
 export interface IStudent {
@@ -27,6 +28,11 @@ export interface IStudent {
   chineseName: string;
   gender: string;
   birthday: Date;
+  grade: string;
+}
+
+export interface IFamilyStudents extends IFamily {
+  students: IStudent[];
 }
 
 export interface IRegStoreState {

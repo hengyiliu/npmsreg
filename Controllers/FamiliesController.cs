@@ -43,16 +43,16 @@ namespace npmsreg.Controllers
 
         // GET: api/Families/5/Students
         [HttpGet("{id}/students")]
-        public async Task<ActionResult<IEnumerable<Students>>> GetStudentsForFamily(int id)
+        public async Task<ActionResult<IEnumerable<StudentRegistration>>> GetStudentsForFamily(int id)
         {
-            var students = await _context.Students.Where(s => s.FamilyId == id).ToListAsync();
+            var students = await StudentsController.GetStudentsDetailsByFamily(_context, id);
 
             if (students == null)
             {
                 return NotFound();
             }
 
-            return students;
+            return students.ToList();
         }
 
         // PUT: api/Families/5
