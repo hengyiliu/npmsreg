@@ -35,7 +35,12 @@ export interface IFamilyStudents extends IFamily {
   students: IStudent[];
 }
 
+export interface IShowModal {
+  showCreateStudentModal: boolean;
+}
+
 export interface IRegStoreState {
   family: IFamily;
-  students: IStudent[]
+  students: IStudent[];
+  showModal: IShowModal;
 }

@@ -1,4 +1,4 @@
-﻿import { IRegStoreState, IFamily, IStudent } from "../store/RegStoreState";
+﻿import { IRegStoreState, IFamily, IStudent, IShowModal } from "../store/RegStoreState";
 import { ThunkDispatch } from "redux-thunk";
 
 export enum FamilyActionsEnum {
@@ -10,6 +10,11 @@ export enum FamilyActionsEnum {
 export enum StudentActionsEnum {
   GetFamilyStudents = "GET_FAMILY_STUDENTS",
   UpdateStudents = "UPDATE_STUDENTS",
+}
+
+export enum ShowModalActionsEnum {
+  ShowCreateStudentModal = "SHOW_CREATE_STUDENT_MODAL",
+  HideCreateStudentModal = "HIDE_CREATE_STUDENT_MODAL"
 }
 
 export interface GetFamilyActionType {
@@ -32,8 +37,14 @@ export interface GetFamilyStudentsActionType {
   payload: IStudent[]
 }
 
+export interface ShowModelActionType {
+  type: ShowModalActionsEnum,
+  payload: IShowModal
+}
+
 export type FamilyActionType = GetFamilyActionType | AddFamilyActionType | UpdateFamilyActionType;
-export type AllActionType = GetFamilyActionType | AddFamilyActionType | UpdateFamilyActionType | GetFamilyStudentsActionType;
+export type AllActionType = GetFamilyActionType | AddFamilyActionType | UpdateFamilyActionType | GetFamilyStudentsActionType | ShowModelActionType;
+
 
 export function GetFamily(family: IFamily): GetFamilyActionType {
   return {
@@ -68,6 +79,13 @@ export function UpdateStudents(students: IStudent[]): GetFamilyStudentsActionTyp
     type: StudentActionsEnum.UpdateStudents,
     payload: students
   };
+}
+
+export function ShowCreateStudentModal(modal: IShowModal): ShowModelActionType {
+  return {
+    type: ShowModalActionsEnum.ShowCreateStudentModal,
+    payload: modal
+  }
 }
 
 export function GetFamilyData(id: number) {
@@ -124,3 +142,7 @@ export function CreateFamilyData(family: IFamily) {
     dispatch(AddFamily(json));
   }
 }
+
+//export function ShowCreateStudentModal() {
+//  dispatch(ShowModal());
+//}

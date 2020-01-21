@@ -1,5 +1,5 @@
-﻿import { FamilyActionType, FamilyActionsEnum, GetFamilyStudentsActionType, StudentActionsEnum } from '../actions/actions';
-import { IRegStoreState, IFamily, IStudent } from '../store/RegStoreState';
+﻿import { FamilyActionType, FamilyActionsEnum, GetFamilyStudentsActionType, StudentActionsEnum, ShowModelActionType, ShowModalActionsEnum } from '../actions/actions';
+import { IRegStoreState, IFamily, IStudent, IShowModal } from '../store/RegStoreState';
 
 const defaultState: IFamily = {
   id: 0,
@@ -34,6 +34,10 @@ const defaultStudentState: IStudent = {
   grade: ""
 }
 
+const defaultShowModalState: IShowModal = {
+  showCreateStudentModal: false
+}
+
 export function FamilyReducer(state: IFamily = defaultState, action: FamilyActionType): IFamily {
   switch (action.type) {
     case FamilyActionsEnum.AddFamily:
@@ -56,5 +60,15 @@ export function StudentReducer(state: IStudent[] = [defaultStudentState], action
     default:
       return state;
   }
+}
 
+export function ModalReducer(state: IShowModal = defaultShowModalState, action: ShowModelActionType): IShowModal {
+  switch (action.type) {
+    case ShowModalActionsEnum.ShowCreateStudentModal:
+      return action.payload;
+    case ShowModalActionsEnum.HideCreateStudentModal:
+      return action.payload;
+    default:
+      return state;
+  }
 }
