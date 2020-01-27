@@ -143,6 +143,23 @@ export function CreateFamilyData(family: IFamily) {
   }
 }
 
+export function CreateStudentData(student: IStudent) {
+  return async (dispatch: ThunkDispatch<IRegStoreState, {}, AllActionType>) => {
+    console.log(student);
+    const resp = await fetch("/api/students/", {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(student)
+    });
+
+    let studentsResp = await fetch(`/api/families/${student.familyId}/students`);
+    let studentsJson = await studentsResp.json() as IStudent[];
+    dispatch(GetFamilyStudents(studentsJson));
+  }
+}
+
 //export function ShowCreateStudentModal() {
 //  dispatch(ShowModal());
 //}

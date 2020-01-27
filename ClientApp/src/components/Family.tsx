@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, FormGroup, Input, Label, Container, Row, Col, Button, Table } from 'reactstrap';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { GetFamily, FamilyActionType, GetFamilyData, UpdateFamilyData, AllActionType, ShowCreateStudentModal } from '../actions/actions';
+import { GetFamily, FamilyActionType, GetFamilyData, UpdateFamilyData, CreateStudentData, AllActionType, ShowCreateStudentModal } from '../actions/actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { IRegStoreState, IFamily, IStudent, IFamilyStudents, IShowModal } from '../store/RegStoreState';
 import { withFormik, Formik, Field, ErrorMessage, FormikProps } from 'formik';
@@ -16,8 +16,9 @@ export interface IFamilyProps extends RouteComponentProps<{ id: string }> {
   getFamilyData: (id: number) => Promise<void>;
   updateFamilyData: (family: IFamilyStudents) => Promise<void>;
   createFamilyData: (family: IFamily) => Promise<void>;
-  showCreateStudentModal: () => void;
-  closeCreateStudentModal: () => void;
+  createStudentHandler: (Student: IStudent) => Promise<void>;
+  showCreateStudentModalHandler: () => void;
+  closeCreateStudentModalHandler: () => void;
 }
 
 const StudentList = (props: { students: IStudent[] }) => {
@@ -137,6 +138,17 @@ class Family extends Component<IFamilyProps, {}> {
 
   public render() {
     let data: IFamilyStudents = { ...this.props.family, students: this.props.students };
+    let newStudent: IStudent = {
+      id: 0,
+      familyId: this.props.family.id,
+      firstName: "",
+      lastName: "",
+      chineseName: "",
+      gender: "",
+      birthday: new Date("2010-01-01"),
+      grade: ""
+    };
+
     return (
       <>
         <Formik
@@ -155,13 +167,14 @@ class Family extends Component<IFamilyProps, {}> {
               <FamilySection family={props.values} />
               <h2>Students</h2>
               <StudentList students={props.values.students} />
-              <Button onClick={this.props.showCreateStudentModal}>Add Student</Button>
+              <Button onClick={this.props.showCreateStudentModalHandler}>Add Student</Button>
               &nbsp;
               <Button disabled={props.isSubmitting}>Submit</Button>
             </Form>
           }
         </Formik>
-        <CreateStudent familyId={this.props.family.id} showModal={this.props.showModal.showCreateStudentModal} closeModalHandler={this.props.closeCreateStudentModal} />
+        <CreateStudent student={newStudent} showModal={this.props.showModal.showCreateStudentModal}
+          closeModalHandler={this.props.closeCreateStudentModalHandler} createStudentHandler={this.props.createStudentHandler} />
       </> );
   }
 }
@@ -179,8 +192,9 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<IRegStoreState, {}, AllActio
   return {
     getFamilyData: (id: number) => dispatch(GetFamilyData(id)),
     updateFamilyData: (family: IFamilyStudents) => dispatch(UpdateFamilyData(family)),
-    showCreateStudentModal: () => dispatch(ShowCreateStudentModal({ showCreateStudentModal: true })),
-    closeCreateStudentModal: () => dispatch(ShowCreateStudentModal({ showCreateStudentModal: false }))
+    createStudentHandler: (student: IStudent) => dispatch(CreateStudentData(student)),
+    showCreateStudentModalHandler: () => dispatch(ShowCreateStudentModal({ showCreateStudentModal: true })),
+    closeCreateStudentModalHandler: () => dispatch(ShowCreateStudentModal({ showCreateStudentModal: false }))
   };
 }
 

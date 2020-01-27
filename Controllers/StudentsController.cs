@@ -16,6 +16,7 @@ namespace npmsreg.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly SchoolContext _context;
+        const int schoolYear = 20192020;
 
         public StudentsController(SchoolContext context)
         {
@@ -36,11 +37,37 @@ namespace npmsreg.Controllers
             return sr.FirstOrDefault();
         }
 
+        [HttpPost]
+        public async Task<ActionResult<StudentRegistration>> PostStudent(StudentRegistration sr)
+        {
+            Students s = new Students
+            {
+                FirstName = sr.FirstName,
+                LastName = sr.LastName,
+                ChineseName = sr.ChineseName,
+                Birthday = sr.Birthday,
+                Gender = sr.Gender,
+                FamilyId = sr.FamilyId
+            };
+            _context.Students.Add(s);
+            await _context.SaveChangesAsync();
+
+            Registrations r = new Registrations
+            {
+                SchoolYear = schoolYear,
+                StudentId = s.Id,
+                Grade = sr.Grade,
+            };
+
+            _context.Registrations.Add(r);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetStudents", new { id = s.Id }, new StudentRegistration(s, r));
+        }
+
         [HttpPut]
         public async Task<ActionResult<IEnumerable<StudentRegistration>>> PutStudents(IEnumerable<StudentRegistration> studentRegs)
         {
-            int schoolYear = 20192020;
-
             var sids = studentRegs.Select(s => s.Id).ToList();
             var students = await _context.Students.Include(s => s.Registrations).Where(s => sids.Contains(s.Id)).ToListAsync();
 
