@@ -39,14 +39,19 @@ export class Home extends Component<RouteComponentProps, IHomePageState> {
       <div>
         <Container>
           <h3>Welcome to NPMS</h3>
-          Student Registration Information
         </Container>
-        <br/>
-        <Container>
+
+        <Container className="mt-5">
           <Row>
             <Col><Label>Enter Family Id</Label></Col>
             <Col><Input name="fid" value={this.state.fid} type="text" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} /></Col>
             <Col><Button tag={Link} color="primary" to={`/family/${this.state.fid}`} disabled={!this.isValidId(this.state.fid)}>Go</Button></Col>
+          </Row>
+          <Row className="mb-3">
+            <Col><p className="text-secondary">(Enter 1 and click Go or just Enter to see family page)</p></Col>
+          </Row>
+          <Row className="mb-3">
+            <Col><Link color="primary" to={`/createfamily`} >Add a new Family</Link></Col>
           </Row>
         </Container>
       </div>
