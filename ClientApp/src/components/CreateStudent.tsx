@@ -25,8 +25,6 @@ export class CreateStudent extends Component<{ student: IStudent, showModal: boo
           enableReinitialize={true}
           initialValues={this.props.student}
           onSubmit={(values, actions) => {
-            debugger;
-            alert(values);
             this.props.createStudentHandler(values);
             this.props.closeModalHandler();
           }}

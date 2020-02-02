@@ -156,7 +156,6 @@ class Family extends Component<IFamilyProps, {}> {
           validate={validateEmail}
           initialValues={data}
           onSubmit={(values, actions) => {
-            debugger;
             this.props.updateFamilyData(values);
             actions.setSubmitting(false);
           }}
