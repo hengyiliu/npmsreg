@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Form, FormGroup, Label, Input, Button, Container, Row, Col } from 'reactstrap';
+import { Label, Input, Button, Container, Row, Col } from 'reactstrap';
 
 interface IHomePageState {
   fid: string;
@@ -14,7 +14,7 @@ export class Home extends Component<RouteComponentProps, IHomePageState> {
   }
 
   keyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key == 'Enter' && this.isValidId(this.state.fid)) {
+    if (e.key === 'Enter' && this.isValidId(this.state.fid)) {
       this.props.history.push(`/family/${this.state.fid}`);
     }
   }

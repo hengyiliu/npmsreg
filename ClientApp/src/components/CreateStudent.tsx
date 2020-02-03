@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Input, Label, Container, Row, Col, Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
-import { GetFamily, FamilyActionType, GetFamilyData, CreateFamilyData } from '../actions/actions';
-import { ThunkDispatch } from 'redux-thunk';
-import { IRegStoreState, IFamily, IStudent } from '../store/RegStoreState';
-import { withFormik, Formik, Field, ErrorMessage, FormikProps } from 'formik';
-import { RouteComponentProps } from 'react-router-dom';
-import { FamilySection, IFamilyProps } from './Family';
+import { Form, FormGroup, Input, Label, Col, Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { IStudent } from '../store/RegStoreState';
+import { Formik, Field } from 'formik';
 
 
 export class CreateStudent extends Component<{ student: IStudent, showModal: boolean, closeModalHandler: () => void, createStudentHandler: (Student: IStudent) => Promise<void> }, {}> {
@@ -24,8 +18,8 @@ export class CreateStudent extends Component<{ student: IStudent, showModal: boo
         <Formik
           enableReinitialize={true}
           initialValues={this.props.student}
-          onSubmit={(values, actions) => {
-            this.props.createStudentHandler(values);
+          onSubmit={async (values, actions) => {
+            await this.props.createStudentHandler(values);
             this.props.closeModalHandler();
           }}
         >
@@ -56,7 +50,7 @@ export class CreateStudent extends Component<{ student: IStudent, showModal: boo
                   <Col md={4}><Label for="grade">Grade</Label></Col>
                   <Col md={8}><Input tag={Field} name="grade" type="text" /></Col>
                 </FormGroup>
-                <Button disabled={props.isSubmitting}>Submit</Button>
+                <Button disabled={props.isSubmitting}>Submit</Button>&nbsp;
                 <Button type="button" onClick={this.props.closeModalHandler}>Cancel</Button>
               </Form>
             </div>

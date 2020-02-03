@@ -14,7 +14,7 @@ export enum StudentActionsEnum {
 
 export enum ShowModalActionsEnum {
   ShowCreateStudentModal = "SHOW_CREATE_STUDENT_MODAL",
-  HideCreateStudentModal = "HIDE_CREATE_STUDENT_MODAL"
+  FetchingDataState = "FETCHING_DATA"
 }
 
 export interface GetFamilyActionType {
@@ -81,15 +81,27 @@ export function UpdateStudents(students: IStudent[]): GetFamilyStudentsActionTyp
   };
 }
 
-export function ShowCreateStudentModal(modal: IShowModal): ShowModelActionType {
+export function ShowCreateStudentModal(showModal: boolean): ShowModelActionType {
   return {
     type: ShowModalActionsEnum.ShowCreateStudentModal,
-    payload: modal
+    payload: {
+      showCreateStudentModal: showModal
+    }
+  }
+}
+
+export function FetchingDataState(fetching: boolean): ShowModelActionType {
+  return {
+    type: ShowModalActionsEnum.FetchingDataState,
+    payload: {
+      isFetching: fetching
+    }
   }
 }
 
 export function GetFamilyData(id: number) {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, AllActionType>) => {
+    dispatch(FetchingDataState(true))
     let resp = await fetch(`/api/families/${id}`);
     let json = await resp.json() as IFamily;
     dispatch(GetFamily(json));
@@ -97,6 +109,7 @@ export function GetFamilyData(id: number) {
     let studentsResp = await fetch(`/api/families/${id}/students`);
     let studentsJson = await studentsResp.json() as IStudent[];
     dispatch(GetFamilyStudents(studentsJson));
+    dispatch(FetchingDataState(false))
   }
 }
 
@@ -131,7 +144,7 @@ export function CreateFamilyData(family: IFamily) {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
     console.log(family);
     const resp = await fetch("/api/families/", {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -140,14 +153,15 @@ export function CreateFamilyData(family: IFamily) {
 
     let json = await resp.json() as IFamily;
     dispatch(AddFamily(json));
+    return json.id;
   }
 }
 
 export function CreateStudentData(student: IStudent) {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, AllActionType>) => {
     console.log(student);
-    const resp = await fetch("/api/students/", {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    await fetch("/api/students/", {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -159,7 +173,3 @@ export function CreateStudentData(student: IStudent) {
     dispatch(GetFamilyStudents(studentsJson));
   }
 }
-
-//export function ShowCreateStudentModal() {
-//  dispatch(ShowModal());
-//}
