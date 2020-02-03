@@ -28,7 +28,6 @@ export class Home extends Component<RouteComponentProps, IHomePageState> {
 
   constructor(props: any) {
     super(props);
-    debugger;
     this.state = {
       fid: ""
     };
