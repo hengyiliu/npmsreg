@@ -35,7 +35,51 @@ export interface IFamilyStudents extends IFamily {
   students: IStudent[];
 }
 
+export interface IShowModal {
+  showCreateStudentModal?: boolean;
+  isFetching?: boolean;
+}
+
 export interface IRegStoreState {
   family: IFamily;
-  students: IStudent[]
+  students: IStudent[];
+  showModal: IShowModal;
+}
+
+export const defaultFamilyState: IFamily = {
+  id: 0,
+  fatherName: "",
+  motherName: "",
+  fatherChineseName: "",
+  motherChineseName: "",
+  address: "",
+  city: "",
+  state: "",
+  zipCode: "",
+  fatherEmail: "",
+  motherEmail: "",
+  fatherPhone: "",
+  motherPhone: "",
+  fatherOccupation: "",
+  motherOccupation: "",
+  fatherHelpArea: "",
+  motherHelpArea: "",
+  spokenLanguages: "",
+  students: []
+}
+
+export const defaultStudentState: IStudent = {
+  id: 0,
+  familyId: 0,
+  firstName: "",
+  lastName: "",
+  chineseName: "",
+  gender: "",
+  birthday: new Date("2010-01-01"),
+  grade: ""
+}
+
+export const defaultShowModalState: IShowModal = {
+  showCreateStudentModal: false,
+  isFetching: false
 }

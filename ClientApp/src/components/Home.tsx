@@ -1,25 +1,58 @@
 import React, { Component } from 'react';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { Label, Input, Button, Container, Row, Col } from 'reactstrap';
 
-export class Home extends Component {
+interface IHomePageState {
+  fid: string;
+}
+
+export class Home extends Component<RouteComponentProps, IHomePageState> {
   static displayName: string = Home.name;
+
+  changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ fid: e.target.value });
+  }
+
+  keyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && this.isValidId(this.state.fid)) {
+      this.props.history.push(`/family/${this.state.fid}`);
+    }
+  }
+
+  isValidId = (str: string) => {
+    if (!this.state.fid || this.state.fid.length === 0)
+      return false;
+
+    return /^\d+$/.test(str);
+  }
+
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      fid: ""
+    };
+  }
 
   public render () {
     return (
       <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we have also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
+        <Container>
+          <h3>Welcome to NPMS</h3>
+        </Container>
+
+        <Container className="mt-5">
+          <Row>
+            <Col><Label>Enter Family Id</Label></Col>
+            <Col><Input name="fid" value={this.state.fid} type="text" onChange={this.changeHandler} onKeyPress={this.keyPressHandler} /></Col>
+            <Col><Button tag={Link} color="primary" to={`/family/${this.state.fid}`} disabled={!this.isValidId(this.state.fid)}>Go</Button></Col>
+          </Row>
+          <Row className="mb-3">
+            <Col><p className="text-secondary">(Enter 1 and click Go or just Enter to see family page)</p></Col>
+          </Row>
+          <Row className="mb-3">
+            <Col><Link color="primary" to={`/createfamily`} >Add a new Family</Link></Col>
+          </Row>
+        </Container>
       </div>
     );
   }

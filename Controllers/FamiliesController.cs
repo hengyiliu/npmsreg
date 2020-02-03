@@ -50,7 +50,7 @@ namespace npmsreg.Controllers
 
             if (students == null)
             {
-                return NotFound();
+                return new List<StudentRegistration>();
             }
 
             return students.ToList();

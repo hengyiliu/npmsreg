@@ -1,4 +1,4 @@
-﻿import { IRegStoreState, IFamily, IStudent } from "../store/RegStoreState";
+﻿import { IRegStoreState, IFamily, IStudent, IShowModal } from "../store/RegStoreState";
 import { ThunkDispatch } from "redux-thunk";
 
 export enum FamilyActionsEnum {
@@ -10,6 +10,11 @@ export enum FamilyActionsEnum {
 export enum StudentActionsEnum {
   GetFamilyStudents = "GET_FAMILY_STUDENTS",
   UpdateStudents = "UPDATE_STUDENTS",
+}
+
+export enum ShowModalActionsEnum {
+  ShowCreateStudentModal = "SHOW_CREATE_STUDENT_MODAL",
+  FetchingDataState = "FETCHING_DATA"
 }
 
 export interface GetFamilyActionType {
@@ -32,8 +37,14 @@ export interface GetFamilyStudentsActionType {
   payload: IStudent[]
 }
 
+export interface ShowModelActionType {
+  type: ShowModalActionsEnum,
+  payload: IShowModal
+}
+
 export type FamilyActionType = GetFamilyActionType | AddFamilyActionType | UpdateFamilyActionType;
-export type AllActionType = GetFamilyActionType | AddFamilyActionType | UpdateFamilyActionType | GetFamilyStudentsActionType;
+export type AllActionType = GetFamilyActionType | AddFamilyActionType | UpdateFamilyActionType | GetFamilyStudentsActionType | ShowModelActionType;
+
 
 export function GetFamily(family: IFamily): GetFamilyActionType {
   return {
@@ -70,8 +81,27 @@ export function UpdateStudents(students: IStudent[]): GetFamilyStudentsActionTyp
   };
 }
 
+export function ShowCreateStudentModal(showModal: boolean): ShowModelActionType {
+  return {
+    type: ShowModalActionsEnum.ShowCreateStudentModal,
+    payload: {
+      showCreateStudentModal: showModal
+    }
+  }
+}
+
+export function FetchingDataState(fetching: boolean): ShowModelActionType {
+  return {
+    type: ShowModalActionsEnum.FetchingDataState,
+    payload: {
+      isFetching: fetching
+    }
+  }
+}
+
 export function GetFamilyData(id: number) {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, AllActionType>) => {
+    dispatch(FetchingDataState(true))
     let resp = await fetch(`/api/families/${id}`);
     let json = await resp.json() as IFamily;
     dispatch(GetFamily(json));
@@ -79,6 +109,7 @@ export function GetFamilyData(id: number) {
     let studentsResp = await fetch(`/api/families/${id}/students`);
     let studentsJson = await studentsResp.json() as IStudent[];
     dispatch(GetFamilyStudents(studentsJson));
+    dispatch(FetchingDataState(false))
   }
 }
 
@@ -113,7 +144,7 @@ export function CreateFamilyData(family: IFamily) {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
     console.log(family);
     const resp = await fetch("/api/families/", {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -122,5 +153,23 @@ export function CreateFamilyData(family: IFamily) {
 
     let json = await resp.json() as IFamily;
     dispatch(AddFamily(json));
+    return json.id;
+  }
+}
+
+export function CreateStudentData(student: IStudent) {
+  return async (dispatch: ThunkDispatch<IRegStoreState, {}, AllActionType>) => {
+    console.log(student);
+    await fetch("/api/students/", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(student)
+    });
+
+    let studentsResp = await fetch(`/api/families/${student.familyId}/students`);
+    let studentsJson = await studentsResp.json() as IStudent[];
+    dispatch(GetFamilyStudents(studentsJson));
   }
 }

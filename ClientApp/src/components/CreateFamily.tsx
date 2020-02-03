@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Input, Label, Container, Row, Col, Button } from 'reactstrap';
-import { Dispatch } from 'redux';
+import { Form, Button } from 'reactstrap';
 import { connect } from 'react-redux';
-import { GetFamily, FamilyActionType, GetFamilyData, CreateFamilyData } from '../actions/actions';
+import { FamilyActionType, CreateFamilyData } from '../actions/actions';
 import { ThunkDispatch } from 'redux-thunk';
-import { IRegStoreState, IFamily, IStudent } from '../store/RegStoreState';
-import { withFormik, Formik, Field, ErrorMessage, FormikProps } from 'formik';
+import { IRegStoreState, IFamily, defaultFamilyState } from '../store/RegStoreState';
+import { Formik } from 'formik';
 import { RouteComponentProps } from 'react-router-dom';
-import { FamilySection, IFamilyProps } from './Family';
+import { FamilySection } from './Family';
 
 
 const validateEmail = (values: IFamily) => {
@@ -22,22 +21,29 @@ const validateEmail = (values: IFamily) => {
   return errors;
 };
 
-class CreateFamily extends Component<IFamilyProps, {}> {
+interface ICreateFamilyProps extends RouteComponentProps {
+  createFamilyData: (family: IFamily) => Promise<number>;
+}
 
-  public async componentDidMount() {
+class CreateFamily extends Component<ICreateFamilyProps, IFamily> {
+
+  constructor(props: any) {
+    super(props);
+    this.state = defaultFamilyState;
   }
 
   public render() {
-    let data = { ...this.props.family, students: this.props.students };
+    let data = this.state;
 
     return (
       <Formik
         enableReinitialize={true}
         initialValues={data}
         validate={validateEmail}
-        onSubmit={(values, actions) => {
-          this.props.createFamilyData(values);
+        onSubmit={async (values, actions) => {
+          let newid = await this.props.createFamilyData(values);
           actions.setSubmitting(false);
+          this.props.history.push(`/family/${newid}`);
         }}
       >
         {props =>
@@ -52,18 +58,10 @@ class CreateFamily extends Component<IFamilyProps, {}> {
   }
 }
 
-
-const mapStateToProps = (state: IRegStoreState) => {
-  return {
-    family: state.family,
-    initialValues: state.family
-  };
-}
-
 const mapDispatchToProps = (dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>) => {
   return {
     createFamilyData: (family: IFamily) => dispatch(CreateFamilyData(family))
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateFamily);
+export default connect(null, mapDispatchToProps)(CreateFamily);
