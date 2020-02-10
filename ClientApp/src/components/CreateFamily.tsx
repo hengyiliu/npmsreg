@@ -48,7 +48,7 @@ class CreateFamily extends Component<ICreateFamilyProps, IFamily> {
       >
         {props =>
           <Form onSubmit={props.handleSubmit}>
-            <h1>Add New Family</h1>
+            <h2>Add New Family</h2>
             <FamilySection family={props.values} />
             <Button disabled={props.isSubmitting}>Submit</Button>
           </Form>

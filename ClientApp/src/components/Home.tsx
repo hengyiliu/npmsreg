@@ -37,7 +37,7 @@ export class Home extends Component<RouteComponentProps, IHomePageState> {
     return (
       <div>
         <Container>
-          <h3>Welcome to NPMS</h3>
+          <h4>North Peninsula Mandarin School Registration System</h4>
         </Container>
 
         <Container className="mt-5">

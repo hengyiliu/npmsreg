@@ -173,9 +173,10 @@ class Family extends Component<IFamilyProps, {}> {
         >
           {props =>
             <Form onSubmit={props.handleSubmit}>
-              <h1>Family ID: {props.values.id}</h1>
+              <h2>Family ID: {props.values.id}</h2>
               <FamilySection family={props.values} />
-              <h2>Students</h2>
+              <br />
+              <h3>Students</h3>
               <StudentList students={props.values.students} />
               <Button onClick={this.props.showCreateStudentModalHandler}>Add Student</Button>
               &nbsp;
