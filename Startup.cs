@@ -25,7 +25,7 @@ namespace npmsreg
         {
             services.AddDbContext<SchoolContext>(
                 options => options.UseSqlite(@"Data Source=SqlScript/SchoolSqlite.db;"));
-                // options => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=School;Trusted_Connection=True;"));
+                // options => options.UseSqlServer(this.Configuration.GetConnectionString("SchoolDatabase")));
 
             services.AddControllers();
 

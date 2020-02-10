@@ -55,6 +55,9 @@ Scaffold-DbContext "Server=(localdb)\mssqllocaldb;Database=School;Trusted_Connec
 node_modules\.bin\eslint src/**/*.ts
 ```
 
+### Deployment
+You can test the app at https://npmsreg.azurewebsites.net/ (It may take a few seconds to load the first time because the database and web site are paused automatically when there's no traffic for a period of time.)
+
 ### Feature Requirements
 For school administrators/principal/dean/board members/etc, 
 - The system contains all student information and their registration information.

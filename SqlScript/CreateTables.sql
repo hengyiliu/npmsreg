@@ -112,7 +112,7 @@ GO
 SET IDENTITY_INSERT [dbo].[Families] ON 
 GO
 INSERT [dbo].[Families] ([Id], [FatherName], [MotherName], [FatherChineseName], [MotherChineseName], [FatherPhone], [MotherPhone], [FatherEmail], [MotherEmail], [SpokenLanguages], [FatherOccupation], [MotherOccupation], [FatherHelpArea], [MotherHelpArea], [Address], [City], [State], [ZipCode], [CreatedAt], [UpdatedAt]) 
-VALUES (1, N'Daming Wang', N'Alice Wang', N'王大明', N'王艾莉', N'4151234567', N'4159876543', N'daming@test.com', N'alice@test.com', N'Mandarin', N'Engineer', N'Accoutant', N'Computer', N'Finance', N'123 Main st', N'San Mateo', N'CA', N'94403', CAST(N'2019-09-29T00:00:00.0000000' AS DateTime2), CAST(N'2019-09-29T00:00:00.0000000' AS DateTime2))
+VALUES (1, N'Daming Wang', N'Alice Wang', N'王大明', N'王艾莉', N'4151234567', N'4159876543', N'daming@test.com', N'alice@test.com', N'Mandarin', N'Engineer', N'Accountant', N'Computer', N'Finance', N'123 Main st', N'San Mateo', N'CA', N'94403', CAST(N'2019-09-29T00:00:00.0000000' AS DateTime2), CAST(N'2019-09-29T00:00:00.0000000' AS DateTime2))
 GO
 SET IDENTITY_INSERT [dbo].[Families] OFF
 GO
