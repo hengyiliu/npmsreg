@@ -5,7 +5,7 @@ import { Form, FormGroup, Input, Label, Col, Button, Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import { GetFamilyData, UpdateFamilyData, CreateStudentData, AllActionType, ShowCreateStudentModal } from '../actions/actions';
 import { ThunkDispatch } from 'redux-thunk';
-import { IRegStoreState, IFamily, IStudent, IFamilyStudents, IShowModal } from '../store/RegStoreState';
+import { IRegStoreState, IFamily, IStudent, IFamilyStudents, IShowModal, IPayment } from '../store/RegStoreState';
 import { Formik, Field, ErrorMessage } from 'formik';
 import { RouteComponentProps } from 'react-router-dom';
 import { CreateStudent } from './CreateStudent';
@@ -13,6 +13,7 @@ import { CreateStudent } from './CreateStudent';
 export interface IFamilyProps extends RouteComponentProps<{ id: string }> {
   family: IFamily;
   students: IStudent[];
+  payments: IPayment[];
   showModal: IShowModal;
   getFamilyData: (id: number) => Promise<void>;
   updateFamilyData: (family: IFamilyStudents) => Promise<void>;
@@ -49,6 +50,39 @@ const StudentList = (props: { students: IStudent[] }) => {
           <th>Birthday</th>
           <th>Gender</th>
           <th>Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        {children}
+      </tbody>
+    </Table>
+  );
+}
+
+const PaymentList = (props: { payments: IPayment[] }) => {
+  let children = []; // in loop i try created components
+
+  for (let i = 0; i < props.payments.length; i += 1) {
+    let sid = props.payments[i].id;
+    children.push(
+      <tr key={sid}>
+        <td>{sid}</td>
+        <td><Input tag={Field} name={`payments[${i}].createdAt`} type="text" /></td>
+        <td><Input tag={Field} name={`payments[${i}].amount`} type="text" /></td>
+        <td><Input tag={Field} name={`payments[${i}].method`} type="text" /></td>
+        <td><Input tag={Field} name={`payments[${i}].transactionRef`} type="text" /></td>
+      </tr>);
+  }
+
+  return (
+    <Table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Method</th>
+          <th>Transaction Ref</th>
         </tr>
       </thead>
       <tbody>
@@ -136,7 +170,7 @@ class Family extends Component<IFamilyProps, {}> {
   }
 
   public render() {
-    let data: IFamilyStudents = { ...this.props.family, students: this.props.students };
+    let data: IFamilyStudents = { ...this.props.family, students: this.props.students, payments: this.props.payments };
     let newStudent: IStudent = {
       id: 0,
       familyId: this.props.family.id,
@@ -180,6 +214,10 @@ class Family extends Component<IFamilyProps, {}> {
               <StudentList students={props.values.students} />
               <Button onClick={this.props.showCreateStudentModalHandler}>Add Student</Button>
               &nbsp;
+              <br />
+              <h3>Payments</h3>
+              <PaymentList payments={props.values.payments} />
+              <br />
               <Button type="submit" disabled={props.isSubmitting}>Save</Button>
             </Form>
           }
@@ -195,6 +233,7 @@ const mapStateToProps = (state: IRegStoreState) => {
   return {
     family: state.family,
     students: state.students,
+    payments: state.payments,
     showModal: state.showModal
   };
 }

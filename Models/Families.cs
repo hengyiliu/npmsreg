@@ -7,6 +7,7 @@ namespace npmsreg.Models
     {
         public Families()
         {
+            Payments = new HashSet<Payments>();
             Students = new HashSet<Students>();
         }
 
@@ -31,6 +32,7 @@ namespace npmsreg.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
+        public virtual ICollection<Payments> Payments { get; set; }
         public virtual ICollection<Students> Students { get; set; }
     }
 }

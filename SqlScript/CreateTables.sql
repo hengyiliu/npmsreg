@@ -102,6 +102,27 @@ ALTER TABLE [dbo].[Registrations] CHECK CONSTRAINT [FK_Registrations_Students]
 GO
 
 
+/****** Object:  Table [dbo].[Payments]    Script Date: 2/23/2020 4:55:55 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Payments](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[SchoolYear] [int] NOT NULL,
+	[FamilyId] [int] NOT NULL,
+	[Amount] [decimal](18, 0) NOT NULL,
+	[Method] [nvarchar](50) NULL,
+	[TransactionRef] [nvarchar](255) NULL,
+	[CreatedAt] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Payments] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 
 
 

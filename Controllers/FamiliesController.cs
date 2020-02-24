@@ -56,6 +56,20 @@ namespace npmsreg.Controllers
             return students.ToList();
         }
 
+        // GET: api/Families/5/Payments
+        [HttpGet("{id}/payments")]
+        public async Task<ActionResult<IEnumerable<Payments>>> GetPaymentsForFamily(int id)
+        {
+            int schoolYear = 20192020;
+
+            var pm = from p in _context.Payments
+                     where p.FamilyId == id && p.SchoolYear == schoolYear
+                     select p;
+
+            var result = await pm.ToListAsync();
+            return result;
+        }
+
         // PUT: api/Families/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.

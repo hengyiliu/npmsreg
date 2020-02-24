@@ -1,4 +1,4 @@
-﻿import { IRegStoreState, IFamily, IStudent, IShowModal } from "../store/RegStoreState";
+﻿import { IRegStoreState, IFamily, IStudent, IPayment, IShowModal } from "../store/RegStoreState";
 import { ThunkDispatch } from "redux-thunk";
 
 export enum FamilyActionsEnum {
@@ -10,6 +10,11 @@ export enum FamilyActionsEnum {
 export enum StudentActionsEnum {
   GetFamilyStudents = "GET_FAMILY_STUDENTS",
   UpdateStudents = "UPDATE_STUDENTS",
+}
+
+export enum PaymentActionsEnum {
+  GetFamilyPayments = "GET_FAMILY_PAYMENTS",
+  UpdatePayments = "UPDATE_PAYMENTS",
 }
 
 export enum ShowModalActionsEnum {
@@ -37,13 +42,18 @@ export interface GetFamilyStudentsActionType {
   payload: IStudent[]
 }
 
+export interface GetFamilyPaymentsActionType {
+  type: PaymentActionsEnum,
+  payload: IPayment[]
+}
+
 export interface ShowModelActionType {
   type: ShowModalActionsEnum,
   payload: IShowModal
 }
 
 export type FamilyActionType = GetFamilyActionType | AddFamilyActionType | UpdateFamilyActionType;
-export type AllActionType = GetFamilyActionType | AddFamilyActionType | UpdateFamilyActionType | GetFamilyStudentsActionType | ShowModelActionType;
+export type AllActionType = GetFamilyActionType | AddFamilyActionType | UpdateFamilyActionType | GetFamilyStudentsActionType | GetFamilyPaymentsActionType | ShowModelActionType;
 
 
 export function GetFamily(family: IFamily): GetFamilyActionType {
@@ -71,6 +81,13 @@ export function GetFamilyStudents(students: IStudent[]): GetFamilyStudentsAction
   return {
     type: StudentActionsEnum.GetFamilyStudents,
     payload: students
+  };
+}
+
+export function GetFamilyPayments(payments: IPayment[]): GetFamilyPaymentsActionType {
+  return {
+    type: PaymentActionsEnum.GetFamilyPayments,
+    payload: payments
   };
 }
 
@@ -109,6 +126,11 @@ export function GetFamilyData(id: number) {
     let studentsResp = await fetch(`/api/families/${id}/students`);
     let studentsJson = await studentsResp.json() as IStudent[];
     dispatch(GetFamilyStudents(studentsJson));
+
+    let paymentsResp = await fetch(`/api/families/${id}/payments`);
+    let paymentsJson = await paymentsResp.json() as IPayment[];
+    dispatch(GetFamilyPayments(paymentsJson));
+
     dispatch(FetchingDataState(false))
   }
 }

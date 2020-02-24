@@ -1,5 +1,5 @@
-﻿import { FamilyActionType, FamilyActionsEnum, GetFamilyStudentsActionType, StudentActionsEnum, ShowModelActionType, ShowModalActionsEnum } from '../actions/actions';
-import { IFamily, IStudent, IShowModal, defaultFamilyState, defaultStudentState, defaultShowModalState } from '../store/RegStoreState';
+﻿import { FamilyActionType, FamilyActionsEnum, GetFamilyStudentsActionType, GetFamilyPaymentsActionType, StudentActionsEnum, ShowModelActionType, ShowModalActionsEnum, PaymentActionsEnum } from '../actions/actions';
+import { IFamily, IStudent, IPayment, IShowModal, defaultFamilyState, defaultStudentState, defaultPaymentState, defaultShowModalState } from '../store/RegStoreState';
 
 
 export function FamilyReducer(state: IFamily = defaultFamilyState, action: FamilyActionType): IFamily {
@@ -20,6 +20,17 @@ export function StudentReducer(state: IStudent[] = [defaultStudentState], action
     case StudentActionsEnum.GetFamilyStudents:
       return action.payload;
     case StudentActionsEnum.UpdateStudents:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+export function PaymentReducer(state: IPayment[] = [defaultPaymentState], action: GetFamilyPaymentsActionType): IPayment[] {
+  switch (action.type) {
+    case PaymentActionsEnum.GetFamilyPayments:
+      return action.payload;
+    case PaymentActionsEnum.UpdatePayments:
       return action.payload;
     default:
       return state;

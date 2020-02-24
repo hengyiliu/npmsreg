@@ -16,6 +16,7 @@ namespace npmsreg.Models
         }
 
         public virtual DbSet<Families> Families { get; set; }
+        public virtual DbSet<Payments> Payments { get; set; }
         public virtual DbSet<Registrations> Registrations { get; set; }
         public virtual DbSet<Students> Students { get; set; }
 
@@ -67,6 +68,21 @@ namespace npmsreg.Models
                 entity.Property(e => e.State).HasMaxLength(50);
 
                 entity.Property(e => e.ZipCode).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Payments>(entity =>
+            {
+                entity.Property(e => e.Amount).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.Method).HasMaxLength(50);
+
+                entity.Property(e => e.TransactionRef).HasMaxLength(255);
+
+                entity.HasOne(d => d.Family)
+                    .WithMany(p => p.Payments)
+                    .HasForeignKey(d => d.FamilyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Payments_Families");
             });
 
             modelBuilder.Entity<Registrations>(entity =>
