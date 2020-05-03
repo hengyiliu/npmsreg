@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace npmsreg.Models
+namespace npmsreg.Entities
 {
     public partial class SchoolContext : DbContext
     {

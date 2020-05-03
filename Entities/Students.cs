@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace npmsreg.Models
+namespace npmsreg.Entities
 {
     public partial class Students
     {
