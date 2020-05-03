@@ -68,7 +68,7 @@ const PaymentList = (props: { payments: IPayment[] }) => {
       <tr key={sid}>
         <td>{sid}</td>
         <td><Input tag={Field} name={`payments[${i}].createdAt`} type="text" /></td>
-        <td><Input tag={Field} name={`payments[${i}].amount`} type="text" /></td>
+        <td><Input tag={Field} name={`payments[${i}].amount`} type="number" /></td>
         <td><Input tag={Field} name={`payments[${i}].method`} type="text" /></td>
         <td><Input tag={Field} name={`payments[${i}].transactionRef`} type="text" /></td>
       </tr>);
