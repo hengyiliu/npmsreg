@@ -31,8 +31,18 @@ export interface IStudent {
   grade: string;
 }
 
+export interface IPayment {
+  id: number;
+  familyId: number;
+  amount: number;
+  method: string;
+  transactionRef: string;
+  createdAt: Date;
+}
+
 export interface IFamilyStudents extends IFamily {
   students: IStudent[];
+  payments: IPayment[];
 }
 
 export interface IShowModal {
@@ -43,6 +53,7 @@ export interface IShowModal {
 export interface IRegStoreState {
   family: IFamily;
   students: IStudent[];
+  payments: IPayment[];
   showModal: IShowModal;
 }
 
@@ -77,6 +88,15 @@ export const defaultStudentState: IStudent = {
   gender: "",
   birthday: new Date("2010-01-01"),
   grade: ""
+}
+
+export const defaultPaymentState: IPayment = {
+  id: 0,
+  familyId: 0,
+  amount: 0,
+  method: "",
+  transactionRef: "",
+  createdAt: new Date("2010-01-01")
 }
 
 export const defaultShowModalState: IShowModal = {
