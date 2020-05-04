@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using npmsreg.Helpers;
-using npmsreg.Models;
+using npmsreg.Entities;
 
 namespace npmsreg.Controllers
 {
