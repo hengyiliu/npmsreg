@@ -1,5 +1,5 @@
-﻿using npmsreg.Helpers;
-using npmsreg.Entities;
+﻿using npmsreg.Entities;
+using npmsreg.Models;
 
 namespace npmsreg.Helpers
 {

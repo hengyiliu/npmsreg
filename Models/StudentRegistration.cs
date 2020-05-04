@@ -1,7 +1,7 @@
 ﻿using System;
 using npmsreg.Entities;
 
-namespace npmsreg.Helpers
+namespace npmsreg.Models
 {
     public class StudentRegistration
     {
