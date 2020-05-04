@@ -26,7 +26,7 @@ namespace npmsreg.Controllers
 
         // GET: api/Students/1
         [HttpGet("{id}")]
-        public async Task<ActionResult<StudentRegistration>> GetStudents(int id)
+        public async Task<ActionResult<Student>> GetStudents(int id)
         {
             var sr = await GetStudentsDetails(_context, new int[] { id });
 
@@ -39,7 +39,7 @@ namespace npmsreg.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<StudentRegistration>> PostStudent(StudentRegistration sr)
+        public async Task<ActionResult<Student>> PostStudent(Student sr)
         {
             Students s = new Students
             {
@@ -63,11 +63,11 @@ namespace npmsreg.Controllers
             _context.Registrations.Add(r);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStudents", new { id = s.Id }, new StudentRegistration(s, r));
+            return CreatedAtAction("GetStudents", new { id = s.Id }, new Student(s, r));
         }
 
         [HttpPut]
-        public async Task<ActionResult<IEnumerable<StudentRegistration>>> PutStudents(IEnumerable<StudentRegistration> studentRegs)
+        public async Task<ActionResult<IEnumerable<Student>>> PutStudents(IEnumerable<Student> studentRegs)
         {
             var sids = studentRegs.Select(s => s.Id).ToList();
             var students = await _context.Students.Include(s => s.Registrations).Where(s => sids.Contains(s.Id)).ToListAsync();
@@ -112,7 +112,7 @@ namespace npmsreg.Controllers
             return updatedRegs.ToList();
         }
 
-        public static async Task<IEnumerable<StudentRegistration>> GetStudentsDetails(SchoolContext context, IEnumerable<int> ids)
+        public static async Task<IEnumerable<Student>> GetStudentsDetails(SchoolContext context, IEnumerable<int> ids)
         {
             int schoolYear = 20192020;
 
@@ -128,10 +128,10 @@ namespace npmsreg.Controllers
                 return null;
             }
 
-            return sr.Select(x => new StudentRegistration(x.Student, x.Registration)).ToList();
+            return sr.Select(x => new Student(x.Student, x.Registration)).ToList();
         }
 
-        public static async Task<IEnumerable<StudentRegistration>> GetStudentsDetailsByFamily(SchoolContext context, int fid)
+        public static async Task<IEnumerable<Student>> GetStudentsDetailsByFamily(SchoolContext context, int fid)
         {
             int schoolYear = 20192020;
 
@@ -147,7 +147,7 @@ namespace npmsreg.Controllers
                 return null;
             }
 
-            return sr.Select(x => new StudentRegistration(x.Student, x.Registration)).ToList();
+            return sr.Select(x => new Student(x.Student, x.Registration)).ToList();
         }
 
     }

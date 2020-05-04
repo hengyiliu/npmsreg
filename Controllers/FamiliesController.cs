@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using npmsreg.Helpers;
 using npmsreg.Entities;
 using npmsreg.Models;
+using npmsreg.Managers;
 
 namespace npmsreg.Controllers
 {
@@ -24,34 +25,38 @@ namespace npmsreg.Controllers
 
         // GET: api/Families
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Families>>> GetFamilies()
+        public async Task<ActionResult<IEnumerable<Family>>> GetFamilies()
         {
-            return await _context.Families.ToListAsync();
+            return await _context.Families
+                            .Select(EntityExpression.AsFamilyModel)
+                            .ToListAsync();
         }
 
         // GET: api/Families/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Families>> GetFamilies(int id)
+        public async Task<ActionResult<Family>> GetFamilies(int id)
         {
-            var families = await _context.Families.FindAsync(id);
+            var family = await _context.Families.Where(f => f.Id == id)
+                                .Select(EntityExpression.AsFamilyModel)
+                                .SingleOrDefaultAsync();
 
-            if (families == null)
+            if (family == null)
             {
                 return NotFound();
             }
 
-            return families;
+            return family;
         }
 
         // GET: api/Families/5/Students
         [HttpGet("{id}/students")]
-        public async Task<ActionResult<IEnumerable<StudentRegistration>>> GetStudentsForFamily(int id)
+        public async Task<ActionResult<IEnumerable<Student>>> GetStudentsForFamily(int id)
         {
             var students = await StudentsController.GetStudentsDetailsByFamily(_context, id);
 
             if (students == null)
             {
-                return new List<StudentRegistration>();
+                return new List<Student>();
             }
 
             return students.ToList();

@@ -5,7 +5,7 @@ namespace npmsreg.Helpers
 {
     public static class StudentsExtension
     {
-        public static void CopyFrom(this Students s, StudentRegistration sr)
+        public static void CopyFrom(this Students s, Student sr)
         {
             s.ChineseName = sr.ChineseName;
             s.FirstName = sr.FirstName;
