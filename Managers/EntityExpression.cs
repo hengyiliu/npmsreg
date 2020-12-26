@@ -33,8 +33,8 @@ namespace npmsreg.Managers
                 // Students
             };
 
-        public static Expression<Func<Entities.Students, Models.Student>> AsStudentModel =>
-            e => new Models.Student
+        public static Expression<Func<Entities.Students, Entities.Registrations, Models.Student>> AsStudentModel =>
+            (e, r) => new Models.Student
             {
                 Id = e.Id,
                 FamilyId = e.FamilyId,
@@ -43,7 +43,28 @@ namespace npmsreg.Managers
                 ChineseName = e.ChineseName,
                 Birthday = e.Birthday,
                 Gender = e.Gender,
-                Grade = e.Registrations.First().Grade
+                Grade = (r == null ? "" : r.Grade)
             };
+
+        public static void FamilyModelToEntity(Entities.Families fa, Models.Family e)
+        {
+            fa.FatherName = e.FatherName;
+            fa.MotherName = e.MotherName;
+            fa.FatherChineseName = e.FatherChineseName;
+            fa.MotherChineseName = e.MotherChineseName;
+            fa.FatherPhone = e.FatherPhone;
+            fa.MotherPhone = e.MotherPhone;
+            fa.FatherEmail = e.FatherEmail;
+            fa.MotherEmail = e.MotherEmail;
+            fa.SpokenLanguages = e.SpokenLanguages;
+            fa.FatherOccupation = e.FatherOccupation;
+            fa.MotherOccupation = e.MotherOccupation;
+            fa.FatherHelpArea = e.FatherHelpArea;
+            fa.MotherHelpArea = e.MotherHelpArea;
+            fa.Address = e.Address;
+            fa.City = e.City;
+            fa.State = e.State;
+            fa.ZipCode = e.ZipCode;
+        }
     }
 }

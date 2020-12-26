@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using npmsreg.Helpers;
 using npmsreg.Entities;
 using npmsreg.Models;
 using npmsreg.Managers;
@@ -80,14 +79,16 @@ namespace npmsreg.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<ActionResult<Families>> PutFamilies(int id, Families families)
+        public async Task<ActionResult<Families>> PutFamilies(int id, Models.Family updateFamily)
         {
-            if (id != families.Id)
+            if (id != updateFamily.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(families).State = EntityState.Modified;
+            var existingFamily = await _context.Families.Where(f => f.Id == id).FirstOrDefaultAsync();
+
+            EntityExpression.FamilyModelToEntity(existingFamily, updateFamily);
 
             try
             {

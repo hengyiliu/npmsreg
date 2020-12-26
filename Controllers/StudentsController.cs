@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using npmsreg.Helpers;
 using npmsreg.Entities;
 using npmsreg.Models;
+using npmsreg.Managers;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace npmsreg.Controllers
 {
@@ -128,7 +129,7 @@ namespace npmsreg.Controllers
                 return null;
             }
 
-            return sr.Select(x => new Student(x.Student, x.Registration)).ToList();
+            return sr.Select(x => StudentAdapter.GetStudent(x.Student, x.Registration)).ToList();
         }
 
         public static async Task<IEnumerable<Student>> GetStudentsDetailsByFamily(SchoolContext context, int fid)
@@ -147,7 +148,7 @@ namespace npmsreg.Controllers
                 return null;
             }
 
-            return sr.Select(x => new Student(x.Student, x.Registration)).ToList();
+            return sr.Select(x => StudentAdapter.GetStudent(x.Student, x.Registration)).ToList();
         }
 
     }
