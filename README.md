@@ -7,7 +7,7 @@ The project is a standard web app with some REST APIs written in C# in .NET Core
 For Mac and Windows, please install the following developer tools (they are all cross platform and work in Mac, Windows or Linux).
 - .NET SDK 5.0 https://dotnet.microsoft.com/download/dotnet/5.0 (in column "Build apps - SDK", choose your platform)
 - Visual Studio Code https://code.visualstudio.com/, a light weight editor/debugger/IDE for any programming languages, especially good for TypeScript/C#.
-- C# extension for VS Code. https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp
+- C# extension for VS Code. https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp
 - Debugger for Chrome extension for VS code. https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
 - SQLite for database. https://www.sqlite.org/
 - Node.js (https://nodejs.org/en/ v14 LTS)
