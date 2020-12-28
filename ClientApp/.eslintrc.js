@@ -9,6 +9,7 @@ module.exports = {
     "es6": true
   },
   "extends": [
+    "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:react/recommended",
   ],
@@ -29,5 +30,7 @@ module.exports = {
     "@typescript-eslint"
   ],
   "rules": {
+    "prefer-const": "warn",
+    "no-unused-vars": "warn"
   }
 };
