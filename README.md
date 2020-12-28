@@ -5,13 +5,13 @@ The project is a standard web app with some REST APIs written in C# in .NET Core
 
 ### Prerequisite
 For Mac and Windows, please install the following developer tools (they are all cross platform and work in Mac, Windows or Linux).
-- .NET Core SDK 3.1 https://dotnet.microsoft.com/download/dotnet-core/3.1 (Build apps - SDK, choose your platform)
+- .NET SDK 5.0 https://dotnet.microsoft.com/download/dotnet/5.0 (in column "Build apps - SDK", choose your platform)
 - Visual Studio Code https://code.visualstudio.com/, a light weight editor/debugger/IDE for any programming languages, especially good for TypeScript/C#.
 - C# extension for VS Code. https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp
 - Debugger for Chrome extension for VS code. https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
 - SQLite for database. https://www.sqlite.org/
-- Node.js (https://nodejs.org/en/ v10 LTS)
-- npm (installed with node.js. Update to the latest, v6.9.0+)
+- Node.js (https://nodejs.org/en/ v14 LTS)
+- npm (installed with node.js. Update to the latest, v6.14.0+)
 
 
 If you are familiar with Visual Studio in Windows, you can also use Visual Studio 2019 (https://visualstudio.microsoft.com/downloads/ Free version for Windows and Mac) and SQL Server Express LocalDB.
@@ -52,7 +52,8 @@ Scaffold-DbContext "Server=(localdb)\mssqllocaldb;Database=School;Trusted_Connec
 
 ### How to run ESlint
 ```Shell
-node_modules\.bin\eslint src/**/*.ts
+cd ClientApp
+npx eslint . --ext .ts,.tsx
 ```
 
 ### Deployment
@@ -61,12 +62,13 @@ You can test the app at https://npmsreg.azurewebsites.net/ (It may take a few se
 ### Feature Requirements
 For school administrators/principal/dean/board members/etc, 
 - The system contains all student information and their registration information.
-- Handle registration and tuition payments
-- Update parent services (for tuition credit)
-- Academic contest registration.
-- Student report cards.
+- Handle registration and withdraw
+- Calculate tuition amount (apply any tuition discount)
+- Export student report cards.
 - Must be easy to prepare for a new school year
 - Authentication (integrated with Google Suite login) and authorization (role based access control)
+- Easy to integrate with 3rd party payment system like Square.
+- Academic contest registration.
 
 For teachers:
 - Teachers can get student information for his/her class only.

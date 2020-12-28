@@ -3,13 +3,13 @@ using npmsreg.Entities;
 
 namespace npmsreg.Models
 {
-    public class StudentRegistration
+    public class Student
     {
-        public StudentRegistration()
+        public Student()
         {
         }
 
-        public StudentRegistration(Students s, Registrations r)
+        public Student(Students s, Registrations r)
         {
             Id = s.Id;
             FamilyId = s.FamilyId;
