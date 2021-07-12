@@ -2,12 +2,15 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using npmsreg.Entities;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace npmsreg
 {
@@ -24,16 +27,18 @@ namespace npmsreg
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SchoolContext>(
-                options => options.UseSqlite(@"Data Source=SqlScript/SchoolSqlite.db;"));
-                // options => options.UseSqlServer(this.Configuration.GetConnectionString("SchoolDatabase")));
+                // options => options.UseSqlite(@"Data Source=SqlScript/SchoolSqlite.db;"));
+                options => options.UseSqlServer(this.Configuration.GetConnectionString("SchoolDatabase")));
 
             services.AddControllers();
-
-            // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+            services.AddSwaggerGen(c =>
             {
-                configuration.RootPath = "ClientApp/build";
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "npmsreg", Version = "v1" });
+                var xmlfile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlpath = Path.Combine(AppContext.BaseDirectory, xmlfile);
+                c.IncludeXmlComments(xmlpath, true);
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,9 +55,10 @@ namespace npmsreg
                 app.UseHsts();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "npmsreg v1"));
+
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
 
             app.UseRouting();
 
@@ -61,17 +67,6 @@ namespace npmsreg
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-            });
-
-
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
-                }
             });
         }
     }

@@ -11,6 +11,9 @@ using npmsreg.Managers;
 
 namespace npmsreg.Controllers
 {
+    /// <summary>
+    /// APIs for creating and managing <see cref="Family"/>
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class FamiliesController : ControllerBase
@@ -22,9 +25,9 @@ namespace npmsreg.Controllers
             _context = context;
         }
 
-        // GET: api/Families
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Family>>> GetFamilies()
+        internal async Task<ActionResult<IEnumerable<Family>>> GetFamilies()
         {
             return await _context.Families
                             .Select(EntityExpression.AsFamilyModel)
@@ -79,7 +82,7 @@ namespace npmsreg.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<ActionResult<Families>> PutFamilies(int id, Models.Family updateFamily)
+        public async Task<ActionResult<Family>> PutFamilies(int id, Models.Family updateFamily)
         {
             if (id != updateFamily.Id)
             {
@@ -106,25 +109,27 @@ namespace npmsreg.Controllers
                 }
             }
 
-            var updatedFamilies = await _context.Families.FindAsync(id);
-            return updatedFamilies;
+            return await GetFamilies(id);
         }
 
         // POST: api/Families
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Families>> PostFamilies(Families families)
+        public async Task<ActionResult<Family>> PostFamilies(Models.Family family)
         {
-            _context.Families.Add(families);
+            Entities.Families fentity = new Families();
+            EntityExpression.FamilyModelToEntity(fentity, family);
+            _context.Families.Add(fentity);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetFamilies", new { id = families.Id }, families);
+            var result = await GetFamilies(fentity.Id);
+            return CreatedAtAction("GetFamilies", new { id = fentity.Id }, result);
         }
 
         // DELETE: api/Families/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Families>> DeleteFamilies(int id)
+        public async Task<ActionResult> DeleteFamilies(int id)
         {
             var families = await _context.Families.FindAsync(id);
             if (families == null)
@@ -135,7 +140,7 @@ namespace npmsreg.Controllers
             _context.Families.Remove(families);
             await _context.SaveChangesAsync();
 
-            return families;
+            return Ok();
         }
 
         private bool FamiliesExists(int id)
