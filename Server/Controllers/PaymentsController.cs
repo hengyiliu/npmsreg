@@ -22,7 +22,7 @@ namespace npmsreg.Controllers
 
         // GET: api/Payments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Payments>>> GetPayments()
+        internal async Task<ActionResult<IEnumerable<Payments>>> GetPayments()
         {
             return await _context.Payments.ToListAsync();
         }
