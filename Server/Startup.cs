@@ -30,6 +30,17 @@ namespace npmsreg
                 // options => options.UseSqlite(@"Data Source=SqlScript/SchoolSqlite.db;"));
                 options => options.UseSqlServer(this.Configuration.GetConnectionString("SchoolDatabase")));
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                    });
+            });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -59,8 +70,8 @@ namespace npmsreg
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "npmsreg v1"));
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
