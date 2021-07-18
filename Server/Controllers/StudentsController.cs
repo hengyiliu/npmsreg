@@ -12,7 +12,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace npmsreg.Controllers
 {
-
+    /// <summary>
+    /// APIs for creating and managing <see cref="Student"/>
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class StudentsController : ControllerBase
