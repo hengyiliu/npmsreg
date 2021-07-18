@@ -18,3 +18,4 @@ jobs:
         dotnet-version: 5.0.101
     - name: Build with dotnet
       run: dotnet build --configuration Release
+      working-directory: ./Server
