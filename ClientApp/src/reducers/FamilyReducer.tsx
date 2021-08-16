@@ -1,8 +1,28 @@
-﻿import { FamilyActionType, FamilyActionsEnum, GetFamilyStudentsActionType, GetFamilyPaymentsActionType, StudentActionsEnum, ShowModelActionType, ShowModalActionsEnum, PaymentActionsEnum } from '../actions/actions';
-import { IFamily, IStudent, IPayment, IShowModal, defaultFamilyState, defaultStudentState, defaultPaymentState, defaultShowModalState } from '../store/RegStoreState';
+﻿import {
+  FamilyActionType,
+  FamilyActionsEnum,
+  GetFamilyStudentsActionType,
+  GetFamilyPaymentsActionType,
+  StudentActionsEnum,
+  ShowModelActionType,
+  ShowModalActionsEnum,
+  PaymentActionsEnum,
+} from '../actions/actions';
+import {
+  IFamily,
+  IStudent,
+  IPayment,
+  IShowModal,
+  defaultFamilyState,
+  defaultStudentState,
+  defaultPaymentState,
+  defaultShowModalState,
+} from '../store/RegStoreState';
 
-
-export function FamilyReducer(state: IFamily = defaultFamilyState, action: FamilyActionType): IFamily {
+export function FamilyReducer(
+  state: IFamily = defaultFamilyState,
+  action: FamilyActionType,
+): IFamily {
   switch (action.type) {
     case FamilyActionsEnum.AddFamily:
       return state;
@@ -15,7 +35,10 @@ export function FamilyReducer(state: IFamily = defaultFamilyState, action: Famil
   }
 }
 
-export function StudentReducer(state: IStudent[] = [defaultStudentState], action: GetFamilyStudentsActionType): IStudent[] {
+export function StudentReducer(
+  state: IStudent[] = [defaultStudentState],
+  action: GetFamilyStudentsActionType,
+): IStudent[] {
   switch (action.type) {
     case StudentActionsEnum.GetFamilyStudents:
       return action.payload;
@@ -26,7 +49,10 @@ export function StudentReducer(state: IStudent[] = [defaultStudentState], action
   }
 }
 
-export function PaymentReducer(state: IPayment[] = [defaultPaymentState], action: GetFamilyPaymentsActionType): IPayment[] {
+export function PaymentReducer(
+  state: IPayment[] = [defaultPaymentState],
+  action: GetFamilyPaymentsActionType,
+): IPayment[] {
   switch (action.type) {
     case PaymentActionsEnum.GetFamilyPayments:
       return action.payload;
@@ -37,12 +63,18 @@ export function PaymentReducer(state: IPayment[] = [defaultPaymentState], action
   }
 }
 
-export function ModalReducer(state: IShowModal = defaultShowModalState, action: ShowModelActionType): IShowModal {
+export function ModalReducer(
+  state: IShowModal = defaultShowModalState,
+  action: ShowModelActionType,
+): IShowModal {
   switch (action.type) {
     case ShowModalActionsEnum.ShowCreateStudentModal:
-      return {...state, showCreateStudentModal: action.payload.showCreateStudentModal }
+      return {
+        ...state,
+        showCreateStudentModal: action.payload.showCreateStudentModal,
+      };
     case ShowModalActionsEnum.FetchingDataState:
-      return { ...state, isFetching: action.payload.isFetching }
+      return { ...state, isFetching: action.payload.isFetching };
     default:
       return state;
   }

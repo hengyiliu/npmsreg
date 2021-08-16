@@ -1,6 +1,11 @@
-﻿import { combineReducers, Reducer } from "redux";
-import { FamilyReducer, StudentReducer, PaymentReducer, ModalReducer } from "./FamilyReducer";
-import { IRegStoreState } from "../store/RegStoreState";
+﻿import { combineReducers, Reducer } from 'redux';
+import { IRegStoreState } from '../store/RegStoreState';
+import {
+  FamilyReducer,
+  StudentReducer,
+  PaymentReducer,
+  ModalReducer,
+} from './FamilyReducer';
 
 export const RootReducer: Reducer<IRegStoreState> = combineReducers<any>({
   family: FamilyReducer,
@@ -8,4 +13,3 @@ export const RootReducer: Reducer<IRegStoreState> = combineReducers<any>({
   payments: PaymentReducer,
   showModal: ModalReducer,
 });
-

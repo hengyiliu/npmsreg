@@ -59,47 +59,47 @@ export interface IRegStoreState {
 
 export const defaultFamilyState: IFamily = {
   id: 0,
-  fatherName: "",
-  motherName: "",
-  fatherChineseName: "",
-  motherChineseName: "",
-  address: "",
-  city: "",
-  state: "",
-  zipCode: "",
-  fatherEmail: "",
-  motherEmail: "",
-  fatherPhone: "",
-  motherPhone: "",
-  fatherOccupation: "",
-  motherOccupation: "",
-  fatherHelpArea: "",
-  motherHelpArea: "",
-  spokenLanguages: "",
-  students: []
-}
+  fatherName: '',
+  motherName: '',
+  fatherChineseName: '',
+  motherChineseName: '',
+  address: '',
+  city: '',
+  state: '',
+  zipCode: '',
+  fatherEmail: '',
+  motherEmail: '',
+  fatherPhone: '',
+  motherPhone: '',
+  fatherOccupation: '',
+  motherOccupation: '',
+  fatherHelpArea: '',
+  motherHelpArea: '',
+  spokenLanguages: '',
+  students: [],
+};
 
 export const defaultStudentState: IStudent = {
   id: 0,
   familyId: 0,
-  firstName: "",
-  lastName: "",
-  chineseName: "",
-  gender: "",
-  birthday: new Date("2010-01-01"),
-  grade: ""
-}
+  firstName: '',
+  lastName: '',
+  chineseName: '',
+  gender: '',
+  birthday: new Date('2010-01-01'),
+  grade: '',
+};
 
 export const defaultPaymentState: IPayment = {
   id: 0,
   familyId: 0,
   amount: 0,
-  method: "",
-  transactionRef: "",
-  createdAt: new Date("2010-01-01")
-}
+  method: '',
+  transactionRef: '',
+  createdAt: new Date('2010-01-01'),
+};
 
 export const defaultShowModalState: IShowModal = {
   showCreateStudentModal: false,
-  isFetching: false
-}
+  isFetching: false,
+};
