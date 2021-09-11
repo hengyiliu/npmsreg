@@ -11,7 +11,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/bin/Debug/net5.0/npmsreg.dll",
+            "program": "${workspaceFolder}/Server/bin/Debug/net5.0/npmsreg.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
