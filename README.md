@@ -10,8 +10,8 @@ For Mac and Windows, please install the following developer tools (they are all 
 - C# extension for VS Code. https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp
 - Debugger for Chrome extension for VS code. https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
 - SQLite for database. https://www.sqlite.org/
-- Node.js (https://nodejs.org/en/ v14 LTS)
-- npm (installed with node.js. Update to the latest, v6.14.0+)
+- Node.js (https://nodejs.org/en/ v16 LTS)
+- npm (installed with node.js. Update to the latest, v7+)
 
 
 If you are familiar with Visual Studio in Windows, you can also use Visual Studio 2019 (https://visualstudio.microsoft.com/downloads/ Free version for Windows and Mac) and SQL Server Express LocalDB.
@@ -26,10 +26,10 @@ The project contains both server (in .NET Core) and client (React in TypeScript)
 - Restore packages
   - restore dotnet packages
     ```Shell
-    cd npmsreg
+    cd npmsreg/Server
     dotnet restore
     ```
-  - restore npm packages
+  - install npm packages
     ```Shell
     cd ClientApp
     npm install
@@ -53,7 +53,7 @@ Scaffold-DbContext "Server=(localdb)\mssqllocaldb;Database=School;Trusted_Connec
 ### How to run ESlint
 ```Shell
 cd ClientApp
-npx eslint . --ext .ts,.tsx
+npm run lint
 ```
 
 ### Deployment
