@@ -27,8 +27,8 @@ namespace npmsreg
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<SchoolContext>(
-                // options => options.UseSqlite(@"Data Source=SqlScript/SchoolSqlite.db;"));
-                options => options.UseSqlServer(this.Configuration.GetConnectionString("SchoolDatabase")));
+                 options => options.UseSqlite(@"Data Source=../SqlScript/SchoolSqlite.db;"));
+                // options => options.UseSqlServer(this.Configuration.GetConnectionString("SchoolDatabase")));
 
             services.AddCors(options =>
             {
@@ -58,6 +58,8 @@ namespace npmsreg
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDefaultFiles();
+                app.UseStaticFiles();
             }
             else
             {
