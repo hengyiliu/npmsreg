@@ -16,6 +16,7 @@ namespace npmsreg.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class FamiliesController : ControllerBase
     {
         private readonly SchoolContext _context;
@@ -52,9 +53,12 @@ namespace npmsreg.Controllers
 
         // GET: api/Families/5/Students
         [HttpGet("{id}/students")]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudentsForFamily(int id)
+        public async Task<ActionResult<IEnumerable<Student>>> GetStudentsForFamily(int id, [FromQuery]int schoolYear)
         {
-            var students = await StudentsController.GetStudentsDetailsByFamily(_context, id);
+            //TODO
+            if (schoolYear == 0) schoolYear = 20192020;
+
+            var students = await StudentsController.GetStudentsDetailsByFamily(_context, id, schoolYear);
 
             if (students == null)
             {
@@ -66,9 +70,9 @@ namespace npmsreg.Controllers
 
         // GET: api/Families/5/Payments
         [HttpGet("{id}/payments")]
-        public async Task<ActionResult<IEnumerable<Payments>>> GetPaymentsForFamily(int id)
+        public async Task<ActionResult<IEnumerable<Payments>>> GetPaymentsForFamily(int id, [FromQuery] int schoolYear)
         {
-            int schoolYear = 20192020;
+            if (schoolYear == 0)  schoolYear = 20192020;
 
             var pm = from p in _context.Payments
                      where p.FamilyId == id && p.SchoolYear == schoolYear
