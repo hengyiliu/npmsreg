@@ -11,6 +11,7 @@ namespace npmsreg.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class PaymentsController : ControllerBase
     {
         private readonly SchoolContext _context;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,10 +17,11 @@ namespace npmsreg.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class StudentsController : ControllerBase
     {
         private readonly SchoolContext _context;
-        const int schoolYear = 20192020;
+        const int DefaultSchoolYear = 20192020;
 
         public StudentsController(SchoolContext context)
         {
@@ -58,7 +59,7 @@ namespace npmsreg.Controllers
 
             Registrations r = new Registrations
             {
-                SchoolYear = schoolYear,
+                SchoolYear = DefaultSchoolYear,
                 StudentId = s.Id,
                 Grade = sr.Grade,
             };
@@ -80,7 +81,7 @@ namespace npmsreg.Controllers
                 var sr = studentRegs.First(s => s.Id == stu.Id);
                 stu.CopyFrom(sr);
 
-                var currentReg = stu.Registrations.FirstOrDefault(r => r.SchoolYear == schoolYear);
+                var currentReg = stu.Registrations.FirstOrDefault(r => r.SchoolYear == DefaultSchoolYear);
                 if (string.IsNullOrWhiteSpace(sr.Grade))
                 {
                     // remove registration if Grade is empty
@@ -96,7 +97,7 @@ namespace npmsreg.Controllers
                     {
                         currentReg = new Registrations()
                         {
-                            SchoolYear = schoolYear,
+                            SchoolYear = DefaultSchoolYear,
                             Grade = sr.Grade,
                             StudentId = sr.Id
                         };
@@ -134,10 +135,8 @@ namespace npmsreg.Controllers
             return sr.Select(x => StudentAdapter.GetStudent(x.Student, x.Registration)).ToList();
         }
 
-        public static async Task<IEnumerable<Student>> GetStudentsDetailsByFamily(SchoolContext context, int fid)
+        public static async Task<IEnumerable<Student>> GetStudentsDetailsByFamily(SchoolContext context, int fid, int schoolYear)
         {
-            int schoolYear = 20192020;
-
             var d = from s in context.Students
                     join r in context.Registrations on new { Id = s.Id, Year = schoolYear } equals new { Id = r.StudentId, Year = r.SchoolYear } into sg
                     from r in sg.DefaultIfEmpty()
