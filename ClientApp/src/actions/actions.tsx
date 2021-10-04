@@ -7,6 +7,8 @@ import {
   IShowModal,
 } from '../store/RegStoreState';
 
+const baseUrl = 'https://npmsreg-dev.azurewebsites.net';
+
 export enum FamilyActionsEnum {
   GetFamily = 'GET_FAMILY',
   AddFamily = 'ADD_FAMILY',
@@ -141,15 +143,15 @@ export function FetchingDataState(fetching: boolean): ShowModelActionType {
 export function GetFamilyData(id: number) {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, AllActionType>) => {
     dispatch(FetchingDataState(true));
-    const resp = await fetch(`/api/families/${id}`);
+    const resp = await fetch(`${baseUrl}/api/families/${id}`);
     const json = (await resp.json()) as IFamily;
     dispatch(GetFamily(json));
 
-    const studentsResp = await fetch(`/api/families/${id}/students`);
+    const studentsResp = await fetch(`${baseUrl}/api/families/${id}/students`);
     const studentsJson = (await studentsResp.json()) as IStudent[];
     dispatch(GetFamilyStudents(studentsJson));
 
-    const paymentsResp = await fetch(`/api/families/${id}/payments`);
+    const paymentsResp = await fetch(`${baseUrl}/api/families/${id}/payments`);
     const paymentsJson = (await paymentsResp.json()) as IPayment[];
     dispatch(GetFamilyPayments(paymentsJson));
 
@@ -160,7 +162,7 @@ export function GetFamilyData(id: number) {
 export function UpdateFamilyData(family: IFamily) {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, AllActionType>) => {
     console.log(family);
-    const resp = await fetch(`/api/families/${family.id}`, {
+    const resp = await fetch(`${baseUrl}/api/families/${family.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -171,7 +173,7 @@ export function UpdateFamilyData(family: IFamily) {
     const json = (await resp.json()) as IFamily;
     dispatch(UpdateFamily(json));
 
-    const stresp = await fetch('/api/students/', {
+    const stresp = await fetch('${baseUrl}/api/students/', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -189,7 +191,7 @@ export function CreateFamilyData(family: IFamily) {
     dispatch: ThunkDispatch<IRegStoreState, {}, FamilyActionType>,
   ) => {
     console.log(family);
-    const resp = await fetch('/api/families/', {
+    const resp = await fetch('${baseUrl}/api/families/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -206,7 +208,7 @@ export function CreateFamilyData(family: IFamily) {
 export function CreateStudentData(student: IStudent) {
   return async (dispatch: ThunkDispatch<IRegStoreState, {}, AllActionType>) => {
     console.log(student);
-    await fetch('/api/students/', {
+    await fetch('${baseUrl}/api/students/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -215,7 +217,7 @@ export function CreateStudentData(student: IStudent) {
     });
 
     const studentsResp = await fetch(
-      `/api/families/${student.familyId}/students`,
+      `${baseUrl}/api/families/${student.familyId}/students`,
     );
     const studentsJson = (await studentsResp.json()) as IStudent[];
     dispatch(GetFamilyStudents(studentsJson));

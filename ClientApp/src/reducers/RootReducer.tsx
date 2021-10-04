@@ -7,7 +7,7 @@ import {
   ModalReducer,
 } from './FamilyReducer';
 
-export const RootReducer: Reducer<IRegStoreState> = combineReducers<any>({
+export const RootReducer: Reducer<IRegStoreState> = combineReducers<IRegStoreState>({
   family: FamilyReducer,
   students: StudentReducer,
   payments: PaymentReducer,
