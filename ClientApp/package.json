@@ -46,7 +46,7 @@
     "eslint-plugin-testing-library": "^4.12.2",
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "prettier": "^2.4.0",
     "sass": "^1.39.2",
     "stylelint": "^13.13.1",
